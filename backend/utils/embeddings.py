@@ -1,10 +1,22 @@
 import logging
+import os
+from pathlib import Path
 from functools import lru_cache
 
 import torch
 from langchain_huggingface import HuggingFaceEmbeddings
 
 logger = logging.getLogger(__name__)
+
+
+def _resolve_local_embedding_model_path() -> str:
+    cache_root = Path.home() / ".cache" / "huggingface" / "hub" / "models--sentence-transformers--all-MiniLM-L6-v2"
+    ref_file = cache_root / "refs" / "main"
+    if ref_file.exists():
+        snapshot = cache_root / "snapshots" / ref_file.read_text().strip()
+        if snapshot.exists():
+            return str(snapshot)
+    return "sentence-transformers/all-MiniLM-L6-v2"
 
 
 @lru_cache(maxsize=1)
@@ -22,9 +34,12 @@ def get_embedding_model():
         logger.warning("GPU not found. Loading embedding model on CPU (expect slower performance).")
 
     try:
+        model_name = _resolve_local_embedding_model_path()
         return HuggingFaceEmbeddings(
-            model_name="sentence-transformers/all-MiniLM-L6-v2",
-            model_kwargs={"device": device},
+            model_name=model_name,
+            cache_folder=os.path.expanduser("~/.cache/huggingface"),
+            model_kwargs={"device": device, "local_files_only": True},
+            encode_kwargs={"normalize_embeddings": True, "batch_size": 32},
         )
     except Exception as exc:
         raise RuntimeError(

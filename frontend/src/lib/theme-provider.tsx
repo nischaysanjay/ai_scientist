@@ -12,30 +12,40 @@ interface ThemeContextType {
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
+function getStoredTheme(): Theme {
+  if (typeof window === 'undefined') {
+    return 'auto'
+  }
+
+  const saved = localStorage.getItem('theme-preference')
+  return saved === 'light' || saved === 'dark' || saved === 'auto' ? saved : 'auto'
+}
+
+function getEffectiveTheme(theme: Theme): 'light' | 'dark' {
+  if (typeof window === 'undefined') {
+    return 'dark'
+  }
+
+  if (theme === 'auto') {
+    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+  }
+
+  return theme
+}
+
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [theme, setThemeState] = useState<Theme>('auto')
-  const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>('dark')
-  const [mounted, setMounted] = useState(false)
+  const [theme, setThemeState] = useState<Theme>(getStoredTheme)
+  const [effectiveTheme, setEffectiveTheme] = useState<'light' | 'dark'>(() =>
+    getEffectiveTheme(getStoredTheme())
+  )
 
   useEffect(() => {
-    setMounted(true)
-    // Load from localStorage
-    const saved = localStorage.getItem('theme-preference') as Theme | null
-    if (saved) {
-      setThemeState(saved)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (!mounted) return
-
     const html = document.documentElement
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')
     let transitionTimeout: number | undefined
 
     const applyTheme = (nextTheme: Theme) => {
-      const actual: 'light' | 'dark' =
-        nextTheme === 'auto' ? (mediaQuery.matches ? 'dark' : 'light') : nextTheme
+      const actual: 'light' | 'dark' = nextTheme === 'auto' ? (mediaQuery.matches ? 'dark' : 'light') : nextTheme
 
       html.classList.add('theme-transitioning')
       if (transitionTimeout) {
@@ -68,7 +78,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
       html.classList.remove('theme-transitioning')
     }
-  }, [theme, mounted])
+  }, [theme])
 
   const setTheme = (newTheme: Theme) => {
     setThemeState(newTheme)
