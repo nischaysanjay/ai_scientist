@@ -39,6 +39,13 @@ It discovers papers, extracts knowledge, generates hypotheses, and quantifies st
     pip install -r backend/requirements.txt
     ```
 
+    **Optional: GPU Acceleration (CUDA)**
+    If you have an NVIDIA GPU and want to use CUDA for faster processing:
+    ```bash
+    # Install Torch with CUDA support (example for CUDA 12.6)
+    pip3 install torch torchvision --index-url https://download.pytorch.org/whl/cu126
+    ```
+
 3. Install frontend dependencies:
     ```bash
     cd frontend && npm install
