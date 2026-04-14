@@ -1,0 +1,50 @@
+# ========================
+# Environment & Secrets
+# ========================
+.env
+.env.local
+backend/.env
+
+# ========================
+# Python
+# ========================
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+env/
+*.log
+
+# ========================
+# Vector Store & Papers
+# ========================
+papers/
+backend/papers/
+*.faiss
+*.pkl
+faiss_index/
+
+# ========================
+# Next.js / Node
+# ========================
+node_modules/
+.next/
+.cache/
+out/
+*.tsbuildinfo
+
+# ========================
+# OS & Editor
+# ========================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
