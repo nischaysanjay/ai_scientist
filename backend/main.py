@@ -177,8 +177,14 @@ async def search_papers(request: SearchPapersRequest):
     Returns a list of papers with metadata.
     """
     try:
-        papers = paper_search.search_papers(request.topic, max_results=request.max_results)
+        papers = await asyncio.wait_for(
+            asyncio.to_thread(paper_search.search_papers, request.topic, request.max_results),
+            timeout=15.0
+        )
         return papers
+    except asyncio.TimeoutError as exc:
+        logger.error("Timeout searching papers for topic: %s", request.topic)
+        raise HTTPException(status_code=504, detail="Timeout searching papers. The arXiv API might be rate limiting us.") from exc
     except Exception as exc:
         raise _server_error("searching papers", exc) from exc
 

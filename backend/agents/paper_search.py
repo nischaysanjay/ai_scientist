@@ -56,7 +56,7 @@ def search_arxiv(topic: str, max_results: int = 5) -> list[dict[str, Any]]:
     """
     Search arXiv for papers related to the given topic.
     """
-    client = arxiv.Client(page_size=max_results, delay_seconds=3, num_retries=3)
+    client = arxiv.Client(page_size=max_results, delay_seconds=1, num_retries=1)
     search = arxiv.Search(
         query=topic,
         max_results=max_results,
@@ -89,7 +89,7 @@ def search_ieee(topic: str, max_results: int = 5) -> list[dict[str, Any]]:
 
     query = f'{topic} AND all:"IEEE"'
     
-    client = arxiv.Client(page_size=max_results, delay_seconds=3, num_retries=3)
+    client = arxiv.Client(page_size=max_results, delay_seconds=1, num_retries=1)
     search = arxiv.Search(
         query=query,
         max_results=max_results,
