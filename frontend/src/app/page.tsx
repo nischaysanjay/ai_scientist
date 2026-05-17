@@ -368,7 +368,7 @@ export default function Home() {
                     className={cn(
                       "flex-1 h-14 rounded-2xl text-lg font-bold transition-all duration-500 active:scale-[0.98]",
                       !isRunning
-                        ? "bg-primary/10 border border-primary/40 text-primary hover:bg-primary/20 [html.light_&]:bg-primary [html.light_&]:text-primary-foreground [html.light_&]:hover:bg-primary/90 [html.light_&]:border-none shadow-[0_4px_20px_rgba(139,92,246,0.15)] [html.light_&]:shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.45)] hover:scale-[1.01] cursor-pointer"
+                        ? "bg-primary/10 border border-primary/40 text-white hover:bg-primary/20 [html.light_&]:bg-primary [html.light_&]:text-primary-foreground [html.light_&]:hover:bg-primary/90 [html.light_&]:border-none shadow-[0_4px_20px_rgba(139,92,246,0.15)] [html.light_&]:shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.45)] hover:scale-[1.01] cursor-pointer"
                         : "bg-muted text-foreground shadow-none border border-border disabled:opacity-100 cursor-not-allowed"
                     )}
                     size="lg"
