@@ -114,12 +114,89 @@ export function ResultSection({
               {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             </Button>
           )}
+
+export function ResultSection({
+  title,
+  children,
+  icon,
+  className,
+  actions,
+  contentToCopy,
+}: ResultSectionProps) {
+  const [copied, setCopied] = useState(false)
+
+  const handleCopy = async () => {
+    if (!contentToCopy) return
+
+    try {
+      await navigator.clipboard.writeText(contentToCopy)
+      setCopied(true)
+      showSuccessToast('Copied', 'Content copied to clipboard')
+      setTimeout(() => setCopied(false), 2000)
+    } catch {
+      showErrorToast('Copy Failed', 'Clipboard access was unavailable.')
+    }
+  }
+
+  return (
+    <div className={cn(
+      'premium-panel rounded-[30px] p-6 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4',
+      className
+    )}>
+      <div className="relative flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          {icon && (
+            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
+              {icon}
+            </div>
+          )}
+          <div>
+            <div className="premium-label">Result</div>
+            <h3 className="text-xl font-black tracking-tight text-foreground">{title}</h3>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {actions}
+          {contentToCopy && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={handleCopy}
+              className="h-9 w-9 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
+            >
+              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
+            </Button>
+          )}
         </div>
       </div>
 
       <div className="relative">
         {children}
       </div>
+    </div>
+  )
+}
+
+function CopyBlock({ text, children, isStreaming }: { text: string, children: React.ReactNode, isStreaming?: boolean }) {
+  const [copied, setCopied] = useState(false)
+  const handleCopy = () => {
+    navigator.clipboard.writeText(text)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  return (
+    <div className="group relative pr-8">
+      {children}
+      {!isStreaming && (
+        <button
+          onClick={handleCopy}
+          className="absolute top-0 right-0 p-1.5 opacity-0 group-hover:opacity-100 transition-opacity rounded-md hover:bg-primary/10 text-muted-foreground hover:text-primary"
+          title="Copy section"
+        >
+          {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+        </button>
+      )}
     </div>
   )
 }
@@ -194,61 +271,67 @@ export function ResultContent({
           const HeadingTag = level.length === 1 ? 'h3' : level.length === 2 ? 'h4' : 'h5'
 
           return (
-            <div key={i} className="space-y-2">
-              <HeadingTag className="pt-1 text-base font-black tracking-tight text-foreground">
-                {renderInlineMarkdown(text)}
-              </HeadingTag>
-              {lines.slice(1).map((line, j) => (
-                <p key={j} className="text-muted-foreground">
-                  {renderInlineMarkdown(line)}
-                </p>
-              ))}
-            </div>
+            <CopyBlock key={i} text={block} isStreaming={isStreaming}>
+              <div className="space-y-2">
+                <HeadingTag className="pt-1 text-base font-black tracking-tight text-foreground">
+                  {renderInlineMarkdown(text)}
+                </HeadingTag>
+                {lines.slice(1).map((line, j) => (
+                  <p key={j} className="text-muted-foreground">
+                    {renderInlineMarkdown(line)}
+                  </p>
+                ))}
+              </div>
+            </CopyBlock>
           )
         }
 
         if (isListBlock) {
           return (
-            <div key={i} className="space-y-2">
-              {lines.map((line, j) => {
-                const kind = getLineKind(line)
-                const marker = kind.numbered?.[1] ? `${kind.numbered[1]}.` : '-'
-                const text = kind.numbered?.[2] ?? kind.bullet?.[1] ?? line
+            <CopyBlock key={i} text={block} isStreaming={isStreaming}>
+              <div className="space-y-2">
+                {lines.map((line, j) => {
+                  const kind = getLineKind(line)
+                  const marker = kind.numbered?.[1] ? `${kind.numbered[1]}.` : '-'
+                  const text = kind.numbered?.[2] ?? kind.bullet?.[1] ?? line
 
-                return (
-                  <div key={j} className="grid grid-cols-[1.5rem_1fr] gap-2 text-muted-foreground">
-                    <span className="text-right font-bold text-primary/80">{marker}</span>
-                    <p className="min-w-0">{renderInlineMarkdown(text)}</p>
-                  </div>
-                )
-              })}
-            </div>
+                  return (
+                    <div key={j} className="grid grid-cols-[1.5rem_1fr] gap-2 text-muted-foreground">
+                      <span className="text-right font-bold text-primary/80">{marker}</span>
+                      <p className="min-w-0">{renderInlineMarkdown(text)}</p>
+                    </div>
+                  )
+                })}
+              </div>
+            </CopyBlock>
           )
         }
 
         return (
-          <div key={i} className="space-y-1">
-            {lines.map((line, j) => {
-              const kind = getLineKind(line)
+          <CopyBlock key={i} text={block} isStreaming={isStreaming}>
+            <div className="space-y-1">
+              {lines.map((line, j) => {
+                const kind = getLineKind(line)
 
-              if (kind.quote) {
+                if (kind.quote) {
+                  return (
+                    <blockquote
+                      key={j}
+                      className="border-l-2 border-primary/40 pl-4 text-muted-foreground"
+                    >
+                      {renderInlineMarkdown(kind.quote[1])}
+                    </blockquote>
+                  )
+                }
+
                 return (
-                  <blockquote
-                    key={j}
-                    className="border-l-2 border-primary/40 pl-4 text-muted-foreground"
-                  >
-                    {renderInlineMarkdown(kind.quote[1])}
-                  </blockquote>
+                  <p key={j} className="transition-colors hover:text-foreground">
+                    {renderInlineMarkdown(line)}
+                  </p>
                 )
-              }
-
-              return (
-                <p key={j} className="transition-colors hover:text-foreground">
-                  {renderInlineMarkdown(line)}
-                </p>
-              )
-            })}
-          </div>
+              })}
+            </div>
+          </CopyBlock>
         )
       })}
       {isStreaming && (
