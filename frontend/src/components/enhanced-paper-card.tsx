@@ -90,7 +90,7 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           {paper.published && (
             <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 transition-colors duration-300 group-hover:bg-white/[0.07] [html.light_&]:border-border/50 [html.light_&]:bg-white/75 [html.light_&]:group-hover:bg-white">
-              <Clock className="h-3.5 w-3.5 text-amber-400" />
+              <Clock className="h-3.5 w-3.5 text-primary" />
               <span>{new Date(paper.published).toLocaleDateString()}</span>
             </div>
           )}
@@ -121,7 +121,7 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
             className="flex-1 min-w-[120px] rounded-xl"
             onClick={toggleSave}
           >
-            <Star className={`mr-2 h-4 w-4 ${saved ? 'fill-amber-400 text-amber-400' : ''}`} />
+            <Star className={`mr-2 h-4 w-4 ${saved ? 'fill-primary text-primary' : ''}`} />
             {saved ? 'Saved' : 'Save'}
           </Button>
 
@@ -251,7 +251,7 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
         {savedCount > 0 && (
           <Button
             onClick={handleExportSaved}
-            className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#7c3aed,#2563eb)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-indigo-500/35 cursor-pointer"
+            className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#8b5cf6,#06b6d4)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-indigo-500/35 cursor-pointer"
           >
             <Download className="mr-2 h-4 w-4" />
             Export Bibliography ({savedCount})
