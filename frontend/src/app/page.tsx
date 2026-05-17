@@ -12,6 +12,12 @@ import {
   usePlanExperiment,
   useValidateHypothesis,
 } from '@/lib/hooks'
+import {
+  useStreamSummary,
+  useStreamGaps,
+  useStreamHypotheses,
+  useStreamExperiment,
+} from '@/lib/hooks'
 import { useApiHealth } from '@/lib/env'
 import { showSuccessToast, showErrorToast } from '@/lib/toast'
 import { Sidebar } from '@/components/sidebar'
@@ -86,6 +92,10 @@ export default function Home() {
   const { generateHypotheses: genHypotheses } = useGenerateHypotheses()
   const { planExperiment } = usePlanExperiment()
   const { validateHypothesis: validateHyp } = useValidateHypothesis()
+  const { streamSummary } = useStreamSummary()
+  const { streamGaps } = useStreamGaps()
+  const { streamHypotheses } = useStreamHypotheses()
+  const { streamExperiment } = useStreamExperiment()
 
   // Get step label for UI
   const getStepLabel = (step: string) => {
@@ -177,25 +187,25 @@ export default function Home() {
         return
       }
 
-      // Step 3: Generate summary
+      // Step 3: Stream summary
       if (stopRequestedRef.current) return
-      const summaryResult = await generateSummary(extracted, topic, modelName, signal)
-      if (stopRequestedRef.current) return
-
-      // Step 4: Identify gaps
-      if (stopRequestedRef.current) return
-      const gapsResult = await identifyGaps(summaryResult || '', topic, modelName, signal)
+      const summaryResult = await streamSummary(extracted, topic, modelName, signal)
       if (stopRequestedRef.current) return
 
-      // Step 5: Generate hypotheses
+      // Step 4: Stream gaps
       if (stopRequestedRef.current) return
-      const hypothesesResult = await genHypotheses(gapsResult, topic, modelName, signal)
+      const gapsResult = await streamGaps(summaryResult || '', topic, modelName, signal)
       if (stopRequestedRef.current) return
 
-      // Step 6: Plan experiment (unless using custom hypothesis)
+      // Step 5: Stream hypotheses
+      if (stopRequestedRef.current) return
+      const hypothesesResult = await streamHypotheses(gapsResult, topic, modelName, signal)
+      if (stopRequestedRef.current) return
+
+      // Step 6: Stream experiment plan (unless using custom hypothesis)
       if (!useCustomHypothesis || !customHypothesis) {
         if (stopRequestedRef.current) return
-        await planExperiment(hypothesesResult || '', modelName, signal)
+        await streamExperiment(hypothesesResult || '', modelName, signal)
         if (stopRequestedRef.current) return
       }
 
