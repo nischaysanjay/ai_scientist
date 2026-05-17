@@ -104,11 +104,17 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between p-3 rounded-lg bg-red-500/8 dark:bg-red-500/12 border border-red-500/20 dark:border-red-400/20">
+          <div 
+            className="flex items-center justify-between p-3 rounded-lg bg-red-500/8 dark:bg-red-500/12 border border-red-500/20 dark:border-red-400/20 cursor-help"
+            title="Conflicts: Pieces of evidence from the literature that directly contradict your hypothesis."
+          >
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Conflicts</div>
             <div className="text-lg font-black text-red-600 dark:text-red-400">{cdm.contradictions}</div>
           </div>
-          <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/8 dark:bg-green-500/12 border border-green-500/20 dark:border-green-400/20">
+          <div 
+            className="flex items-center justify-between p-3 rounded-lg bg-green-500/8 dark:bg-green-500/12 border border-green-500/20 dark:border-green-400/20 cursor-help"
+            title="Support: Pieces of evidence from the literature that support or are neutral to your hypothesis."
+          >
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Support</div>
             <div className="text-lg font-black text-green-600 dark:text-green-400">{cdm.neutral_chunks}</div>
           </div>
@@ -223,7 +229,10 @@ export function NDIResultDisplay({ ndi }: { ndi: NDIResult }) {
     <div className="p-5 rounded-2xl bg-cyan-500/8 dark:bg-cyan-500/12 border border-cyan-500/25 dark:border-cyan-400/25 space-y-4">
       <div className="flex items-center gap-3">
         <Fingerprint className="h-6 w-6 text-cyan-600 dark:text-cyan-300" />
-        <div>
+        <div 
+          className="cursor-help"
+          title="Novelty Distance Index (NDI): Measures how semantically unique your hypothesis is compared to existing literature. Higher means more radical and novel."
+        >
           <h4 className="font-bold text-foreground">{ndi.novelty}</h4>
           <p className="text-xs text-muted-foreground">Analysis based on embedding distance</p>
         </div>

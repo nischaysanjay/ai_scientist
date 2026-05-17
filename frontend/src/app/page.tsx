@@ -193,6 +193,7 @@ export default function Home() {
     stopRequestedRef.current = false
     abortControllerRef.current = new AbortController()
     setIsStopping(false)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
 
     try {
       setIsRunning(true)
@@ -268,7 +269,6 @@ export default function Home() {
     }
   }
 
-  // Setup keyboard shortcuts (must be after function definitions)
   useKeyboardShortcuts({
     onRun: handleRunAIScientist,
     onExport: () => {
@@ -277,6 +277,7 @@ export default function Home() {
       }
     },
     onHelp: () => setShowHelpModal(true),
+    onStop: handleStopWorkflow,
   })
 
   return (

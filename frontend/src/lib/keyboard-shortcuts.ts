@@ -6,9 +6,10 @@ interface KeyboardShortcuts {
   onRun?: () => void
   onExport?: () => void
   onHelp?: () => void
+  onStop?: () => void
 }
 
-export function useKeyboardShortcuts({ onRun, onExport, onHelp }: KeyboardShortcuts) {
+export function useKeyboardShortcuts({ onRun, onExport, onHelp, onStop }: KeyboardShortcuts) {
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       // Ctrl/Cmd + Enter = Run
@@ -28,9 +29,15 @@ export function useKeyboardShortcuts({ onRun, onExport, onHelp }: KeyboardShortc
         e.preventDefault()
         onHelp?.()
       }
+
+      // Escape = Stop
+      if (e.key === 'Escape') {
+        e.preventDefault()
+        onStop?.()
+      }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [onRun, onExport, onHelp])
+  }, [onRun, onExport, onHelp, onStop])
 }
