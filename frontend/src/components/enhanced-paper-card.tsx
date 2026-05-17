@@ -95,19 +95,8 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
               className="flex-1 min-w-[120px] rounded-xl"
               onClick={() => window.open(paper.pdf_url, '_blank')}
             >
-              <Download className="mr-2 h-4 w-4" />
-              PDF
-            </Button>
-          )}
-
-          {paper.pdf_url && (
-            <Button
-              size="sm"
-              variant="secondary"
-              className="rounded-xl"
-              onClick={() => window.open(paper.pdf_url, '_blank')}
-            >
-              <ExternalLink className="h-4 w-4" />
+              <ExternalLink className="mr-2 h-4 w-4" />
+              View PDF
             </Button>
           )}
         </div>
