@@ -53,7 +53,7 @@ export function ExportMenu({ onExportMarkdown, onExportJSON, isDisabled }: Expor
     },
     {
       key: 'json-download',
-      icon: <FileText className="h-5 w-5 text-cyan-400" />,
+      icon: <FileText className="h-5 w-5 text-primary" />,
       title: 'Data Summary',
       description: 'Structured JSON export',
       action: () => handleDownload('json'),
@@ -61,7 +61,7 @@ export function ExportMenu({ onExportMarkdown, onExportJSON, isDisabled }: Expor
     },
     {
       key: 'markdown-copy',
-      icon: copied === 'markdown' ? <Check className="h-5 w-5 text-primary" /> : <Copy className="h-5 w-5 text-cyan-400" />,
+      icon: copied === 'markdown' ? <Check className="h-5 w-5 text-primary" /> : <Copy className="h-5 w-5 text-primary" />,
       title: 'Copy Markdown',
       description: 'Copy report to clipboard',
       action: () => handleCopy('markdown'),

@@ -251,7 +251,7 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
         {savedCount > 0 && (
           <Button
             onClick={handleExportSaved}
-            className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#8b5cf6,#06b6d4)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-indigo-500/35 cursor-pointer"
+            className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#8b5cf6,#6366f1)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-indigo-500/35 cursor-pointer"
           >
             <Download className="mr-2 h-4 w-4" />
             Export Bibliography ({savedCount})

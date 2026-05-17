@@ -64,7 +64,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
 
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-6 shadow-[0_14px_48px_rgba(15,23,42,0.22)] [html.light_&]:border-border/50 [html.light_&]:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(248,250,255,0.78))] [html.light_&]:shadow-[0_14px_36px_rgba(88,99,135,0.12)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.16),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(34,211,238,0.12),transparent_28%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.16),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.12),transparent_28%)]" />
 
       <div className="relative flex flex-col gap-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
@@ -109,7 +109,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
           <div className="relative h-3 overflow-hidden rounded-full border border-white/10 bg-black/20 shadow-inner [html.light_&]:border-border/50 [html.light_&]:bg-slate-200/80">
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.03),transparent)]" />
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,rgba(99,102,241,0.95),rgba(129,140,248,0.95)_35%,rgba(34,211,238,0.95))] shadow-[0_0_28px_rgba(99,102,241,0.35)] transition-all duration-1000 ease-out"
+              className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,rgba(139,92,246,0.95),rgba(99,102,241,0.95)_45%,rgba(168,85,247,0.95))] shadow-[0_0_28px_rgba(139,92,246,0.45)] transition-all duration-1000 ease-out"
               style={{ width: `${progressPercent}%` }}
             >
               <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.24),transparent)] shine-slow" />
@@ -134,10 +134,10 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                 key={step.key}
                 className={cn(
                   'relative overflow-hidden rounded-2xl border px-4 py-4 backdrop-blur-md transition-all duration-500',
-                  isCompleted && 'border-primary/25 bg-primary/[0.08] shadow-[0_10px_30px_rgba(99,102,241,0.10)]',
+                  isCompleted && 'border-primary/25 bg-primary/[0.08] shadow-[0_10px_30px_rgba(139,92,246,0.10)]',
                   isCurrent && (isLight
-                    ? 'border-sky-300 bg-sky-100/95 shadow-[0_16px_32px_rgba(56,189,248,0.16)]'
-                    : 'border-cyan-300/35 bg-[linear-gradient(145deg,rgba(99,102,241,0.18),rgba(34,211,238,0.12))] shadow-[0_14px_36px_rgba(34,211,238,0.10)]'),
+                    ? 'border-primary/40 bg-primary/[0.06] shadow-[0_16px_32px_rgba(139,92,246,0.14)]'
+                    : 'border-primary/45 bg-[linear-gradient(145deg,rgba(139,92,246,0.22),rgba(99,102,241,0.14))] shadow-[0_14px_36px_rgba(139,92,246,0.18)]'),
                   isPending && (isLight
                     ? 'border-slate-200 bg-white/90'
                     : 'border-white/8 bg-white/[0.03]'),
@@ -152,8 +152,8 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                       'flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-500',
                       isCompleted && 'border-primary/30 bg-primary/15 text-primary',
                       isCurrent && (isLight
-                        ? 'border-sky-400 bg-white text-slate-900 shadow-[0_0_16px_rgba(56,189,248,0.4)] animate-pulse'
-                        : 'border-cyan-300 bg-white/10 text-cyan-200 shadow-[0_0_20px_rgba(34,211,238,0.45)] animate-pulse'),
+                        ? 'border-primary bg-white text-primary shadow-[0_0_16px_rgba(139,92,246,0.4)] animate-pulse'
+                        : 'border-primary bg-primary/20 text-white shadow-[0_0_20px_rgba(139,92,246,0.65)] animate-pulse'),
                       isPending && (isLight
                         ? 'border-slate-200 bg-slate-50 text-slate-700'
                         : 'border-white/10 bg-black/10 text-muted-foreground/55'),
@@ -167,7 +167,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                     className={cn(
                       'rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.22em]',
                       isCompleted && 'bg-primary/10 text-primary',
-                      isCurrent && (isLight ? 'bg-white text-slate-900' : 'bg-cyan-400/10 text-cyan-200'),
+                      isCurrent && 'bg-primary/10 text-primary',
                       isPending && (isLight ? 'bg-slate-100 text-slate-700' : 'bg-white/5 text-muted-foreground/55'),
                       isSkipped && 'bg-muted/10 text-muted-foreground/60'
                     )}

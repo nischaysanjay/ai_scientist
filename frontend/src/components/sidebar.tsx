@@ -82,7 +82,7 @@ export function Sidebar() {
               )}>
                 <div className="relative space-y-3">
                   <div className="flex items-center gap-2">
-                    <Zap className="h-4 w-4 text-cyan-400" />
+                    <Zap className="h-4 w-4 text-primary" />
                     <Label htmlFor="model" className="text-sm font-semibold text-muted-foreground">
                       LLM Engine
                     </Label>

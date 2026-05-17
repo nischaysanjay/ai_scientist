@@ -19,7 +19,7 @@ export function QuickStatsCard({ papersFound, currentStep, isLoading, estimatedT
     ? 'bg-emerald-400 text-emerald-400'
     : isIdle
       ? 'bg-slate-400 text-slate-400'
-      : 'bg-cyan-400 text-cyan-400'
+      : 'bg-primary text-primary'
 
   return (
     <div className="premium-panel rounded-[26px] p-5 rise-in">
@@ -46,7 +46,7 @@ export function QuickStatsCard({ papersFound, currentStep, isLoading, estimatedT
             <div className="premium-card rounded-2xl px-4 py-3 rise-in" style={{ animationDelay: '150ms' }}>
               <div className="relative flex items-center justify-between">
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <Clock className="h-4 w-4 text-cyan-400" />
+                  <Clock className="h-4 w-4 text-primary" />
                   <span className="text-xs font-semibold uppercase tracking-[0.24em] text-muted-foreground/70">Est. Time</span>
                 </div>
                 <span className="text-sm font-bold text-foreground">{estimatedTime}</span>
