@@ -132,10 +132,39 @@ export function ResultContent({
   isStreaming?: boolean
 }) {
   const endRef = useRef<HTMLSpanElement | null>(null)
+  const autoScrollEnabled = useRef(true)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollY = window.scrollY
+      const maxScroll = document.documentElement.scrollHeight - window.innerHeight
+      if (maxScroll - scrollY < 150) {
+        autoScrollEnabled.current = true
+      } else {
+        autoScrollEnabled.current = false
+      }
+    }
+
+    const handleWheel = (e: WheelEvent) => {
+      if (e.deltaY < 0) {
+        autoScrollEnabled.current = false
+      }
+    }
+
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    window.addEventListener('wheel', handleWheel, { passive: true })
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      window.removeEventListener('wheel', handleWheel)
+    }
+  }, [])
 
   useEffect(() => {
     if (!isStreaming) return
-    endRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    if (autoScrollEnabled.current) {
+      endRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+    }
   }, [content, isStreaming])
 
   if (!content) {
