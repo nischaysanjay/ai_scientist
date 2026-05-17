@@ -2,7 +2,7 @@
 
 import { ChevronDown, Download, ExternalLink, Clock, Star } from 'lucide-react'
 import { Paper } from '@/types'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 
 interface EnhancedPaperCardProps {
@@ -13,6 +13,44 @@ interface EnhancedPaperCardProps {
 export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
   const [expanded, setExpanded] = useState(false)
   const [saved, setSaved] = useState(false)
+
+  useEffect(() => {
+    try {
+      const savedPapers = localStorage.getItem('saved_papers_list')
+      if (savedPapers) {
+        const parsed = JSON.parse(savedPapers)
+        if (Array.isArray(parsed) && parsed.some((p: Paper) => p.title === paper.title)) {
+          setSaved(true)
+        }
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }, [paper.title])
+
+  const toggleSave = () => {
+    const nextSaved = !saved
+    setSaved(nextSaved)
+    try {
+      const savedPapers = localStorage.getItem('saved_papers_list')
+      let parsed: Paper[] = []
+      if (savedPapers) {
+        const temp = JSON.parse(savedPapers)
+        if (Array.isArray(temp)) parsed = temp
+      }
+      if (nextSaved) {
+        if (!parsed.some((p: Paper) => p.title === paper.title)) {
+          parsed.push(paper)
+        }
+      } else {
+        parsed = parsed.filter((p: Paper) => p.title !== paper.title)
+      }
+      localStorage.setItem('saved_papers_list', JSON.stringify(parsed))
+      window.dispatchEvent(new Event('saved_papers_updated'))
+    } catch (e) {
+      console.error(e)
+    }
+  }
 
   const getYear = (dateString?: string) => {
     if (!dateString) return null
@@ -59,22 +97,20 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
         </div>
 
         {paper.summary && (
-          <div className="rounded-[22px] border border-border/40 bg-muted/20 dark:bg-black/10 p-4">
-            <div className="relative space-y-3">
-              <button
-                onClick={() => setExpanded(!expanded)}
-                className="flex w-full items-center justify-between gap-3 text-left text-sm font-semibold text-foreground/88 transition-colors hover:text-foreground"
-              >
-                <span>{expanded ? 'Hide abstract' : 'Show abstract'}</span>
-                <ChevronDown className={`h-4 w-4 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
-              </button>
+          <div className="space-y-3">
+            <button
+              onClick={() => setExpanded(!expanded)}
+              className="inline-flex items-center gap-2 font-bold text-xs text-primary hover:opacity-85 transition-opacity"
+            >
+              <span>{expanded ? 'Hide Abstract' : 'View Abstract'}</span>
+              <ChevronDown className={`h-3 w-3 transition-transform duration-300 ${expanded ? 'rotate-180' : ''}`} />
+            </button>
 
-              {expanded && (
-                <div className="rounded-2xl border border-white/8 bg-black/10 p-4 text-sm leading-relaxed text-muted-foreground [html.light_&]:border-border/50 [html.light_&]:bg-white/70">
-                  {paper.summary}
-                </div>
-              )}
-            </div>
+            {expanded && (
+              <div className="animate-in fade-in slide-in-from-top-2 duration-300 rounded-[22px] border border-white/10 bg-white/[0.02] p-5 text-sm text-muted-foreground leading-relaxed [html.light_&]:border-border/50 [html.light_&]:bg-black/[0.02]">
+                {paper.summary}
+              </div>
+            )}
           </div>
         )}
 
@@ -83,7 +119,7 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
             size="sm"
             variant="outline"
             className="flex-1 min-w-[120px] rounded-xl"
-            onClick={() => setSaved(!saved)}
+            onClick={toggleSave}
           >
             <Star className={`mr-2 h-4 w-4 ${saved ? 'fill-amber-400 text-amber-400' : ''}`} />
             {saved ? 'Saved' : 'Save'}
@@ -110,8 +146,76 @@ interface EnhancedPaperListProps {
   isLoading?: boolean
 }
 
-
 export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps) {
+  const [savedCount, setSavedCount] = useState(0)
+
+  const updateSavedCount = () => {
+    try {
+      const savedPapers = localStorage.getItem('saved_papers_list')
+      if (savedPapers) {
+        const parsed = JSON.parse(savedPapers)
+        if (Array.isArray(parsed)) {
+          setSavedCount(parsed.length)
+        }
+      } else {
+        setSavedCount(0)
+      }
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
+  useEffect(() => {
+    updateSavedCount()
+    window.addEventListener('saved_papers_updated', updateSavedCount)
+    return () => {
+      window.removeEventListener('saved_papers_updated', updateSavedCount)
+    }
+  }, [])
+
+  const handleExportSaved = () => {
+    try {
+      const savedPapers = localStorage.getItem('saved_papers_list')
+      if (!savedPapers) return
+      const parsed: Paper[] = JSON.parse(savedPapers)
+      if (!Array.isArray(parsed) || parsed.length === 0) return
+
+      let markdown = `# Saved Research Papers Bibliography\n\n`
+      markdown += `Generated on: ${new Date().toLocaleString()}\n`
+      markdown += `Total Saved Papers: ${parsed.length}\n\n`
+      markdown += `---\n\n`
+
+      parsed.forEach((paper, index) => {
+        markdown += `### ${index + 1}. ${paper.title}\n`
+        if (paper.authors && paper.authors.length > 0) {
+          markdown += `- **Authors:** ${paper.authors.join(', ')}\n`
+        }
+        if (paper.published) {
+          markdown += `- **Published Date:** ${new Date(paper.published).toLocaleDateString()}\n`
+        }
+        if (paper.pdf_url) {
+          markdown += `- **PDF Link:** [View PDF Document](${paper.pdf_url})\n`
+        }
+        if (paper.summary) {
+          markdown += `\n**Abstract / Summary:**\n${paper.summary}\n`
+        }
+        markdown += `\n---\n\n`
+      })
+
+      const blob = new Blob([markdown], { type: 'text/markdown' })
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `saved_research_bibliography_${new Date().toISOString().slice(0, 10)}.md`
+      document.body.appendChild(a)
+      a.click()
+      document.body.removeChild(a)
+      URL.revokeObjectURL(url)
+    } catch (e) {
+      console.error(e)
+    }
+  }
+
   if (isLoading) {
     return (
       <div className="space-y-4">
@@ -131,15 +235,41 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
 
   return (
     <div className="space-y-4">
-      {papers.map((paper, idx) => (
-        <div
-          key={`${paper.title}-${idx}`}
-          className="animate-reveal fill-mode-both"
-          style={{ animationDelay: `${idx * 120}ms` }}
-        >
-          <EnhancedPaperCard paper={paper} />
+      {/* Header Banner */}
+      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-[28px] border border-white/10 bg-white/[0.02] p-6 backdrop-blur-md [html.light_&]:border-border/50 [html.light_&]:bg-white/40">
+        <div className="space-y-1">
+          <h4 className="text-lg font-black tracking-tight text-foreground">
+            Research Bibliography ({papers.length} Papers)
+          </h4>
+          <p className="text-sm text-muted-foreground">
+            {savedCount > 0 
+              ? `You have starred ${savedCount} important reference paper${savedCount === 1 ? '' : 's'} for export.`
+              : 'Star key papers to add them to your personalized saved bibliography.'}
+          </p>
         </div>
-      ))}
+        
+        {savedCount > 0 && (
+          <Button
+            onClick={handleExportSaved}
+            className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#7c3aed,#2563eb)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-indigo-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-indigo-500/35 cursor-pointer"
+          >
+            <Download className="mr-2 h-4 w-4" />
+            Export Bibliography ({savedCount})
+          </Button>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        {papers.map((paper, idx) => (
+          <div
+            key={`${paper.title}-${idx}`}
+            className="animate-reveal fill-mode-both"
+            style={{ animationDelay: `${idx * 120}ms` }}
+          >
+            <EnhancedPaperCard paper={paper} />
+          </div>
+        ))}
+      </div>
     </div>
   )
 }
