@@ -86,7 +86,7 @@ export function ResultSection({
 
   return (
     <div className={cn(
-      'premium-panel rounded-[30px] p-6 transition-all duration-300 hover:-translate-y-0.5 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4',
+      'premium-panel rounded-[30px] p-6 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4',
       className
     )}>
       <div className="relative flex items-center justify-between mb-6">

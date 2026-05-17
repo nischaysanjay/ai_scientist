@@ -64,7 +64,7 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
   const year = getYear(paper.published)
 
   return (
-    <div className="premium-card rounded-[28px] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_12px_32px_rgba(139,92,246,0.12)] group">
+    <div className="premium-card rounded-[28px] p-6 transition-all duration-300 hover:border-primary/25 hover:shadow-[0_12px_32px_rgba(139,92,246,0.12)] group">
       <div className="relative space-y-5">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1 space-y-2">
@@ -251,7 +251,7 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
         {savedCount > 0 && (
           <Button
             onClick={handleExportSaved}
-            className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#8b5cf6,#a855f7)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-purple-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-purple-500/35 cursor-pointer"
+            className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#8b5cf6,#a855f7)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-purple-500/25 transition-all duration-300 hover:shadow-purple-500/35 cursor-pointer"
           >
             <Download className="mr-2 h-4 w-4" />
             Export Bibliography ({savedCount})

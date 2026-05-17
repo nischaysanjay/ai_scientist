@@ -70,7 +70,7 @@ export function EmptyState({ onSelectExample }: EmptyStateProps) {
               <button
                 key={example}
                 onClick={() => onSelectExample?.(example)}
-                className="premium-card rounded-[22px] px-5 py-4 text-left transition-all duration-300 hover:-translate-y-1 hover:border-primary/20 hover:bg-primary/[0.06] rise-in group"
+                className="premium-card rounded-[22px] px-5 py-4 text-left transition-all duration-300 hover:border-primary/20 hover:bg-primary/[0.06] rise-in group"
                 style={{ animationDelay: `${400 + examples.indexOf(example) * 100}ms` }}
               >
                 <div className="relative flex items-center justify-between gap-4">

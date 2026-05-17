@@ -390,7 +390,7 @@ export default function Home() {
                     <Button
                       onClick={handleStopWorkflow}
                       variant="destructive"
-                      className="h-14 w-14 rounded-2xl hover:bg-destructive/10 transition-all duration-200 hover:-translate-y-0.5 animate-in slide-in-from-right-4 duration-300"
+                      className="h-14 w-14 rounded-2xl hover:bg-destructive/10 transition-all duration-200 animate-in slide-in-from-right-4 duration-300"
                       title="Stop Workflow"
                     >
                       <X className="h-5 w-5" />
@@ -402,7 +402,7 @@ export default function Home() {
                       onClick={resetWorkflow}
                       variant="outline"
                       disabled={isRunning}
-                      className="h-14 w-14 rounded-2xl hover:bg-foreground/5 transition-all duration-200 hover:-translate-y-0.5 animate-in slide-in-from-right-4 duration-300"
+                      className="h-14 w-14 rounded-2xl hover:bg-foreground/5 transition-all duration-200 animate-in slide-in-from-right-4 duration-300"
                       title="Reset Workflow"
                     >
                       <RotateCcw className="h-5 w-5" />
