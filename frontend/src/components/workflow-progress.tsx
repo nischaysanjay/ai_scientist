@@ -10,7 +10,7 @@ import {
   CheckCircle2,
   Check,
 } from 'lucide-react'
-import { WorkflowStep } from '@/lib/store'
+import { WorkflowStep, useWorkflowStore } from '@/lib/store'
 import { cn } from '@/lib/cn'
 import { useTheme } from '@/lib/theme-provider'
 
@@ -50,6 +50,7 @@ const STEP_LABELS: Record<WorkflowStep, string> = {
 
 export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressProps) {
   const { effectiveTheme } = useTheme()
+  const { useCustomHypothesis } = useWorkflowStore()
   const isLight = effectiveTheme === 'light'
   const currentIndex = STEPS.findIndex((step) => step.key === currentStep)
   const progressPercent = isComplete ? 100 : currentIndex < 0 ? 0 : ((currentIndex + 1) / STEPS.length) * 100
@@ -123,9 +124,10 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 xl:grid-cols-7">
           {STEPS.map((step, idx) => {
-            const isCompleted = idx < currentIndex || isComplete
+            const isSkipped = step.key === 'planning-experiment' && useCustomHypothesis
+            const isCompleted = (idx < currentIndex && !isSkipped) || (isComplete && !isSkipped)
             const isCurrent = step.key === currentStep && !isComplete
-            const isPending = !isCompleted && !isCurrent
+            const isPending = !isCompleted && !isCurrent && !isSkipped
 
             return (
               <div
@@ -138,7 +140,8 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                     : 'border-cyan-300/35 bg-[linear-gradient(145deg,rgba(99,102,241,0.18),rgba(34,211,238,0.12))] shadow-[0_14px_36px_rgba(34,211,238,0.10)]'),
                   isPending && (isLight
                     ? 'border-slate-200 bg-white/90'
-                    : 'border-white/8 bg-white/[0.03]')
+                    : 'border-white/8 bg-white/[0.03]'),
+                  isSkipped && 'border-dashed border-muted-foreground/30 bg-muted/5 opacity-60'
                 )}
               >
                 <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/35 to-transparent opacity-70" />
@@ -153,7 +156,8 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                         : 'border-cyan-300/35 bg-white/10 text-cyan-200 shadow-[0_0_18px_rgba(34,211,238,0.18)]'),
                       isPending && (isLight
                         ? 'border-slate-200 bg-slate-50 text-slate-700'
-                        : 'border-white/10 bg-black/10 text-muted-foreground/55')
+                        : 'border-white/10 bg-black/10 text-muted-foreground/55'),
+                      isSkipped && 'border-muted-foreground/20 bg-muted/10 text-muted-foreground/50'
                     )}
                   >
                     {isCompleted ? <Check className="h-4 w-4" /> : step.icon}
@@ -164,10 +168,11 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                       'rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-[0.22em]',
                       isCompleted && 'bg-primary/10 text-primary',
                       isCurrent && (isLight ? 'bg-white text-slate-900' : 'bg-cyan-400/10 text-cyan-200'),
-                      isPending && (isLight ? 'bg-slate-100 text-slate-700' : 'bg-white/5 text-muted-foreground/55')
+                      isPending && (isLight ? 'bg-slate-100 text-slate-700' : 'bg-white/5 text-muted-foreground/55'),
+                      isSkipped && 'bg-muted/10 text-muted-foreground/60'
                     )}
                   >
-                    {isCompleted ? 'Done' : isCurrent ? 'Live' : 'Queued'}
+                    {isCompleted ? 'Done' : isCurrent ? 'Live' : isSkipped ? 'Skipped' : 'Queued'}
                   </span>
                 </div>
 
@@ -175,13 +180,14 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                   <div
                     className={cn(
                       'text-sm font-bold tracking-tight',
-                      isCompleted || isCurrent ? 'text-foreground' : 'text-muted-foreground/70'
+                      isCompleted || isCurrent ? 'text-foreground' : 'text-muted-foreground/70',
+                      isSkipped && 'text-muted-foreground/60 line-through decoration-muted-foreground/30'
                     )}
                   >
                     {step.label}
                   </div>
                   <div className="text-[11px] leading-relaxed text-muted-foreground/75">
-                    {step.detail}
+                    {isSkipped ? 'Stage skipped in manual mode' : step.detail}
                   </div>
                 </div>
 
