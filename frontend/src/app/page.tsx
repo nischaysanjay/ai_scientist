@@ -183,6 +183,8 @@ export default function Home() {
 
   // Main workflow orchestration
   const handleRunAIScientist = async () => {
+    if (isRunning) return
+    
     if (!topic.trim()) {
       showErrorToast('Error', 'Please enter a research topic')
       return

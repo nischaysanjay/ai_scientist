@@ -11,7 +11,10 @@ def download_pdf(pdf_url, save_path):
     """
     Downloads a PDF from a URL to a local path.
     """
-    response = requests.get(pdf_url, timeout=30)
+    headers = {
+        'User-Agent': 'AIScientist/1.0 (Mozilla/5.0; Windows NT 10.0; Win64; x64) AppleWebKit/537.36'
+    }
+    response = requests.get(pdf_url, headers=headers, timeout=30)
     response.raise_for_status()
     with open(save_path, 'wb') as f:
         f.write(response.content)

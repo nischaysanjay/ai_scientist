@@ -16,7 +16,6 @@ def create_vector_store(text_chunks, topic=None):
     vector_store = FAISS.from_documents(
         text_chunks,
         embedding=embeddings,
-        normalize_L2=True,
         distance_strategy=DistanceStrategy.COSINE,
     )
     

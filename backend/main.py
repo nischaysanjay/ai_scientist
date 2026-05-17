@@ -15,6 +15,10 @@ from typing import Any, List, Optional
 from dotenv import load_dotenv
 load_dotenv()
 
+# Suppress HuggingFace unauthenticated and symlink warnings
+os.environ["HF_HUB_DISABLE_SYMLINKS_WARNING"] = "1"
+os.environ["HF_HUB_DISABLE_TELEMETRY"] = "1"
+
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
