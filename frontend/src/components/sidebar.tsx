@@ -31,8 +31,8 @@ export function Sidebar() {
   const isWorkflowActive = isLoading || (currentStep !== 'idle' && currentStep !== 'complete')
 
   return (
-    <aside className="lg:col-span-1 space-y-6">
-      <div className="sticky top-8 space-y-6">
+    <aside className="lg:col-span-1 space-y-6 self-start">
+      <div className="space-y-6">
         <div className="premium-panel rounded-[30px] p-6 animate-reveal [animation-delay:100ms]">
           <div className="relative space-y-8">
             <div className="flex items-center justify-between">
