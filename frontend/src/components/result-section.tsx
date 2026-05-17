@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { cn } from '@/lib/cn'
 import { Copy, Check } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -49,6 +49,16 @@ function renderInlineMarkdown(line: string): React.ReactNode[] {
   }
 
   return segments.length > 0 ? segments : [line]
+}
+
+function getLineKind(line: string) {
+  const trimmed = line.trim()
+  const heading = trimmed.match(/^(#{1,3})\s+(.+)$/)
+  const numbered = trimmed.match(/^(\d+)[.)]\s+(.+)$/)
+  const bullet = trimmed.match(/^[-*]\s+(.+)$/)
+  const quote = trimmed.match(/^>\s+(.+)$/)
+
+  return { trimmed, heading, numbered, bullet, quote }
 }
 
 export function ResultSection({
@@ -114,7 +124,20 @@ export function ResultSection({
   )
 }
 
-export function ResultContent({ content }: { content: string }) {
+export function ResultContent({
+  content,
+  isStreaming = false,
+}: {
+  content: string
+  isStreaming?: boolean
+}) {
+  const endRef = useRef<HTMLSpanElement | null>(null)
+
+  useEffect(() => {
+    if (!isStreaming) return
+    endRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' })
+  }, [content, isStreaming])
+
   if (!content) {
     return (
       <div className="flex flex-col items-center justify-center p-8 text-center bg-muted/20 rounded-xl border border-dashed">
@@ -125,32 +148,87 @@ export function ResultContent({ content }: { content: string }) {
     )
   }
 
-  const paragraphs = content.split('\n\n').filter((p) => p.trim())
+  const blocks = content.split('\n\n').filter((p) => p.trim())
 
   return (
     <div className="space-y-6 text-sm leading-relaxed text-foreground/90">
-      {paragraphs.map((paragraph, i) => (
-        <div key={i} className="space-y-1">
-          {paragraph.split('\n').map((line, j) => {
-            const trimmed = line.trim()
-            const isListItem = trimmed.startsWith('- ') || trimmed.startsWith('* ')
-            const displayText = isListItem ? trimmed.substring(2) : line
+      {blocks.map((block, i) => {
+        const lines = block.split('\n').filter((line) => line.trim())
+        const firstLineKind = getLineKind(lines[0] ?? '')
+        const isListBlock = lines.every((line) => {
+          const kind = getLineKind(line)
+          return kind.bullet || kind.numbered
+        })
 
-            return (
-              <p
-                key={j}
-                className={cn(
-                  'transition-colors hover:text-foreground',
-                  isListItem ? 'pl-4 text-muted-foreground' : ''
-                )}
-              >
-                {isListItem ? <span className="mr-2">-</span> : null}
-                {renderInlineMarkdown(displayText)}
-              </p>
-            )
-          })}
-        </div>
-      ))}
+        if (firstLineKind.heading) {
+          const [, level, text] = firstLineKind.heading
+          const HeadingTag = level.length === 1 ? 'h3' : level.length === 2 ? 'h4' : 'h5'
+
+          return (
+            <div key={i} className="space-y-2">
+              <HeadingTag className="pt-1 text-base font-black tracking-tight text-foreground">
+                {renderInlineMarkdown(text)}
+              </HeadingTag>
+              {lines.slice(1).map((line, j) => (
+                <p key={j} className="text-muted-foreground">
+                  {renderInlineMarkdown(line)}
+                </p>
+              ))}
+            </div>
+          )
+        }
+
+        if (isListBlock) {
+          return (
+            <div key={i} className="space-y-2">
+              {lines.map((line, j) => {
+                const kind = getLineKind(line)
+                const marker = kind.numbered?.[1] ? `${kind.numbered[1]}.` : '-'
+                const text = kind.numbered?.[2] ?? kind.bullet?.[1] ?? line
+
+                return (
+                  <div key={j} className="grid grid-cols-[1.5rem_1fr] gap-2 text-muted-foreground">
+                    <span className="text-right font-bold text-primary/80">{marker}</span>
+                    <p className="min-w-0">{renderInlineMarkdown(text)}</p>
+                  </div>
+                )
+              })}
+            </div>
+          )
+        }
+
+        return (
+          <div key={i} className="space-y-1">
+            {lines.map((line, j) => {
+              const kind = getLineKind(line)
+
+              if (kind.quote) {
+                return (
+                  <blockquote
+                    key={j}
+                    className="border-l-2 border-primary/40 pl-4 text-muted-foreground"
+                  >
+                    {renderInlineMarkdown(kind.quote[1])}
+                  </blockquote>
+                )
+              }
+
+              return (
+                <p key={j} className="transition-colors hover:text-foreground">
+                  {renderInlineMarkdown(line)}
+                </p>
+              )
+            })}
+          </div>
+        )
+      })}
+      {isStreaming && (
+        <span
+          ref={endRef}
+          className="ml-0.5 inline-block h-4 w-2 translate-y-0.5 animate-pulse rounded-sm bg-primary/80"
+          aria-hidden="true"
+        />
+      )}
     </div>
   )
 }
