@@ -130,10 +130,14 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
             const isPending = !isCompleted && !isCurrent && !isSkipped
 
             return (
-              <div
+              <button
                 key={step.key}
+                onClick={() => window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' })}
+                title="Scroll to active tab"
                 className={cn(
-                  'relative overflow-hidden rounded-2xl border px-4 py-4 backdrop-blur-md transition-all duration-500',
+                  'relative overflow-hidden text-left rounded-2xl border px-4 py-4 backdrop-blur-md transition-all duration-500',
+                  (isCurrent || isCompleted) && 'cursor-pointer hover:-translate-y-1 hover:shadow-[0_12px_40px_rgba(139,92,246,0.25)] focus:outline-none',
+                  (!isCurrent && !isCompleted) && 'cursor-default',
                   isCompleted && 'border-primary/25 bg-primary/[0.08] shadow-[0_10px_30px_rgba(139,92,246,0.10)]',
                   isCurrent && (isLight
                     ? 'border-primary/40 bg-primary/[0.06] shadow-[0_16px_32px_rgba(139,92,246,0.14)]'
@@ -217,7 +221,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                     </span>
                   </div>
                 )}
-              </div>
+              </button>
             )
           })}
         </div>
