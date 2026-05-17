@@ -91,26 +91,21 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
         <div className="flex flex-col gap-3">
-          <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/8 dark:bg-green-500/12 border border-green-500/20 dark:border-green-400/20">
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Support</div>
-            <div className="text-lg font-black text-green-600 dark:text-green-400">{cdm.supporting_chunks}</div>
-          </div>
           <div className="flex items-center justify-between p-3 rounded-lg bg-red-500/8 dark:bg-red-500/12 border border-red-500/20 dark:border-red-400/20">
             <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Conflicts</div>
             <div className="text-lg font-black text-red-600 dark:text-red-400">{cdm.contradictions}</div>
           </div>
-          <div className="flex items-center justify-between p-3 rounded-lg bg-blue-500/8 dark:bg-blue-500/12 border border-blue-500/20 dark:border-blue-400/20">
-            <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Neutral</div>
-            <div className="text-lg font-black text-blue-600 dark:text-blue-400">{cdm.neutral_chunks}</div>
+          <div className="flex items-center justify-between p-3 rounded-lg bg-green-500/8 dark:bg-green-500/12 border border-green-500/20 dark:border-green-400/20">
+            <div className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold">Support</div>
+            <div className="text-lg font-black text-green-600 dark:text-green-400">{cdm.neutral_chunks}</div>
           </div>
         </div>
         <div className="flex items-center justify-center w-full min-h-[192px]">
             <PieChart width={220} height={180}>
               <Pie
                 data={[
-                  { name: 'Support', value: cdm.supporting_chunks, color: '#10b981' },
                   { name: 'Conflicts', value: cdm.contradictions, color: '#ef4444' },
-                  { name: 'Neutral', value: cdm.neutral_chunks, color: '#3b82f6' },
+                  { name: 'Support', value: cdm.neutral_chunks, color: '#10b981' },
                 ].filter(d => d.value > 0)}
                 cx="50%"
                 cy="50%"
@@ -121,9 +116,8 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
                 stroke="none"
               >
                 {[
-                  { name: 'Support', value: cdm.supporting_chunks, color: '#10b981' },
                   { name: 'Conflicts', value: cdm.contradictions, color: '#ef4444' },
-                  { name: 'Neutral', value: cdm.neutral_chunks, color: '#3b82f6' },
+                  { name: 'Support', value: cdm.neutral_chunks, color: '#10b981' },
                 ].filter(d => d.value > 0).map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
