@@ -34,7 +34,7 @@ def extract_text_from_pdf(pdf_path):
         line = line.strip()
         if len(line) < 10:
             continue
-        line = re.sub(r'[^A-Za-z0-9\s\.,;:\-_\'"()/\[\]%]+', ' ', line)
+        line = re.sub(r'[^A-Za-z0-9\s\.,;:\-_\'"()/\[\]%=+<>*^~]+', ' ', line)
         line = re.sub(r'([^\w\s])\1{2,}', r'\1', line)
         cleaned_lines.append(line)
 
@@ -60,16 +60,13 @@ def process_paper(paper, download_dir="papers"):
         
     save_path = os.path.join(download_dir, filename)
     
-    # Check if already downloaded
-    if not os.path.exists(save_path):
-        logger.info("Downloading '%s'...", paper['title'])
-        try:
-            download_pdf(paper['pdf_url'], save_path)
-        except Exception as e:
-            logger.warning("Failed to download '%s': %s", paper['title'], e)
-            return ""
-    else:
-        logger.info("Using cached '%s'.", paper['title'])
+    # Always download fresh
+    logger.info("Downloading '%s'...", paper['title'])
+    try:
+        download_pdf(paper['pdf_url'], save_path)
+    except Exception as e:
+        logger.warning("Failed to download '%s': %s", paper['title'], e)
+        return ""
     
     logger.info("Extracting text from '%s'...", save_path)
     try:
