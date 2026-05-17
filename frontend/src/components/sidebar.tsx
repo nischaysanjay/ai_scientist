@@ -6,6 +6,7 @@ import { Slider } from '@/components/ui/slider'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
+import { cn } from '@/lib/cn'
 import { QuickStatsCard } from '@/components/quick-stats-card'
 import {
   Settings2,
@@ -46,7 +47,10 @@ export function Sidebar() {
             </div>
 
             <div className="space-y-6">
-              <div className="premium-card rounded-[24px] p-4">
+              <div className={cn(
+                "premium-card rounded-[24px] p-4 transition-all duration-300",
+                isWorkflowActive && "opacity-60 hover:translate-y-0 hover:shadow-none pointer-events-none"
+              )}>
                 <div className="relative space-y-4">
                   <div className="flex items-center justify-between">
                     <Label htmlFor="num-papers" className="text-sm font-semibold text-muted-foreground">
@@ -72,7 +76,10 @@ export function Sidebar() {
                 </div>
               </div>
 
-              <div className="premium-card rounded-[24px] p-4">
+              <div className={cn(
+                "premium-card rounded-[24px] p-4 transition-all duration-300",
+                isWorkflowActive && "opacity-60 hover:translate-y-0 hover:shadow-none pointer-events-none"
+              )}>
                 <div className="relative space-y-3">
                   <div className="flex items-center gap-2">
                     <Zap className="h-4 w-4 text-amber-400" />
@@ -94,7 +101,10 @@ export function Sidebar() {
                 </div>
               </div>
 
-              <div className="premium-card rounded-[22px] p-3.5">
+              <div className={cn(
+                "premium-card rounded-[22px] p-3.5 transition-all duration-300",
+                isWorkflowActive && "opacity-60 hover:translate-y-0 hover:shadow-none pointer-events-none"
+              )}>
                 <div className="relative space-y-3">
                   <div className="flex items-center gap-2">
                     <FlaskConical className="h-4 w-4 text-primary" />

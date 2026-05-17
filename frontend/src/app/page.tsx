@@ -354,7 +354,7 @@ export default function Home() {
                     value={topic}
                     onChange={(e) => setTopic(e.target.value)}
                     placeholder="e.g., Deep Learning in Oncology, Quantum Computing Stability..."
-                    className="h-14 text-lg"
+                    className="h-14 text-lg transition-all duration-300 focus-visible:ring-violet-500/35 focus-visible:border-violet-500/50 hover:border-violet-500/30"
                     disabled={isRunning}
                   />
                 </div>
@@ -365,7 +365,9 @@ export default function Home() {
                     disabled={isRunning || !isHealthy}
                     className={cn(
                       "flex-1 h-14 rounded-2xl text-lg font-bold transition-all duration-500 active:scale-[0.98]",
-                      !isRunning ? "" : "bg-muted text-foreground shadow-none border border-border disabled:opacity-100 cursor-not-allowed"
+                      !isRunning
+                        ? "bg-gradient-to-r from-violet-600 via-indigo-600 to-cyan-500 hover:from-violet-500 hover:via-indigo-500 hover:to-cyan-400 text-white shadow-[0_4px_20px_rgba(99,102,241,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.45)] hover:scale-[1.01] border-none cursor-pointer"
+                        : "bg-muted text-foreground shadow-none border border-border disabled:opacity-100 cursor-not-allowed"
                     )}
                     size="lg"
                   >

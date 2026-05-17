@@ -152,8 +152,8 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                       'flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-500',
                       isCompleted && 'border-primary/30 bg-primary/15 text-primary',
                       isCurrent && (isLight
-                        ? 'border-sky-300 bg-white text-slate-900 shadow-[0_8px_18px_rgba(56,189,248,0.18)]'
-                        : 'border-cyan-300/35 bg-white/10 text-cyan-200 shadow-[0_0_18px_rgba(34,211,238,0.18)]'),
+                        ? 'border-sky-400 bg-white text-slate-900 shadow-[0_0_16px_rgba(56,189,248,0.4)] animate-pulse'
+                        : 'border-cyan-300 bg-white/10 text-cyan-200 shadow-[0_0_20px_rgba(34,211,238,0.45)] animate-pulse'),
                       isPending && (isLight
                         ? 'border-slate-200 bg-slate-50 text-slate-700'
                         : 'border-white/10 bg-black/10 text-muted-foreground/55'),
@@ -193,16 +193,24 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
 
                 {isCurrent && (
                   <div className="mt-4 flex items-center gap-2">
+                    <span className="relative flex h-2 w-2">
+                      <span
+                        className={cn(
+                          'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75',
+                          isLight ? 'bg-sky-400' : 'bg-cyan-400'
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          'relative inline-flex h-2 w-2 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.85)]',
+                          isLight ? 'bg-sky-500' : 'bg-cyan-300'
+                        )}
+                      />
+                    </span>
                     <span
                       className={cn(
-                        'inline-flex h-2 w-2 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.85)]',
-                        isLight ? 'bg-sky-500' : 'bg-cyan-300'
-                      )}
-                    />
-                    <span
-                      className={cn(
-                        'text-[10px] font-bold uppercase tracking-[0.2em]',
-                        isLight ? 'text-slate-900' : 'text-cyan-200/90'
+                        'text-[10px] font-bold uppercase tracking-[0.2em] animate-pulse',
+                        isLight ? 'text-sky-600' : 'text-cyan-200/90'
                       )}
                     >
                       Active now

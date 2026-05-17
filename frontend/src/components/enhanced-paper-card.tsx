@@ -26,7 +26,7 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
   const year = getYear(paper.published)
 
   return (
-    <div className="premium-card rounded-[28px] p-6 transition-transform duration-300 hover:-translate-y-1 hover:border-primary/20 group">
+    <div className="premium-card rounded-[28px] p-6 transition-all duration-300 hover:-translate-y-1 hover:border-primary/25 hover:shadow-[0_12px_32px_rgba(99,102,241,0.12)] group">
       <div className="relative space-y-5">
         <div className="flex items-start justify-between gap-4">
           <div className="min-w-0 flex-1 space-y-2">
