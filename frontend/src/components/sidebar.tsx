@@ -49,7 +49,7 @@ export function Sidebar() {
             <div className="space-y-6">
               <div className={cn(
                 "premium-card rounded-[24px] p-4 transition-all duration-300",
-                isWorkflowActive && "opacity-60 hover:translate-y-0 hover:shadow-none pointer-events-none"
+                isWorkflowActive && "opacity-60 hover:shadow-none pointer-events-none"
               )}>
                 <div className="relative space-y-4">
                   <div className="flex items-center justify-between">
@@ -78,7 +78,7 @@ export function Sidebar() {
 
               <div className={cn(
                 "premium-card rounded-[24px] p-4 transition-all duration-300",
-                isWorkflowActive && "opacity-60 hover:translate-y-0 hover:shadow-none pointer-events-none"
+                isWorkflowActive && "opacity-60 hover:shadow-none pointer-events-none"
               )}>
                 <div className="relative space-y-3">
                   <div className="flex items-center gap-2">
@@ -103,7 +103,7 @@ export function Sidebar() {
 
               <div className={cn(
                 "premium-card rounded-[22px] p-3.5 transition-all duration-300",
-                isWorkflowActive && "opacity-60 hover:translate-y-0 hover:shadow-none pointer-events-none"
+                isWorkflowActive && "opacity-60 hover:shadow-none pointer-events-none"
               )}>
                 <div className="relative space-y-3">
                   <div className="flex items-center gap-2">
