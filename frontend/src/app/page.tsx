@@ -448,8 +448,9 @@ export default function Home() {
             {papers.length > 0 ? (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ResultTab)} className="space-y-6">
-                  <div className="premium-panel rounded-[28px] p-2 sticky top-4 z-40 backdrop-blur-md bg-background/80 overflow-x-auto scrollbar-hide">
-                    <TabsList className="relative w-full min-w-[600px] grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
+                  <div className="sticky top-4 z-50 pt-1 pb-1 -mt-1 -mb-1">
+                    <div className="premium-panel rounded-[28px] p-2 backdrop-blur-xl bg-background/85 shadow-[0_8px_30px_rgba(0,0,0,0.12)] overflow-x-auto scrollbar-hide">
+                      <TabsList className="relative w-full min-w-[600px] grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
                       {/* Smooth Sliding Background Bubble */}
                       <span
                         className="absolute h-[calc(100%-4px)] rounded-[22px] bg-[linear-gradient(135deg,rgba(139,92,246,0.18),rgba(168,85,247,0.08))] border border-primary/30 shadow-[0_0_24px_rgba(139,92,246,0.25)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
@@ -483,8 +484,9 @@ export default function Home() {
                       </TabsTrigger>
                     </TabsList>
                   </div>
+                </div>
 
-                  {/* Validation Tab */}
+                {/* Validation Tab */}
                   <TabsContent value="validation" className="outline-none motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4 motion-safe:duration-500">
                     {isRunning && !validationResult ? (
                       <ResultSection title="Hypothesis Validation" icon={<Target className="h-5 w-5" />}>
