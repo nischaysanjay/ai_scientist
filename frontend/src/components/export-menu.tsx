@@ -105,7 +105,7 @@ export function ExportMenu({ onExportMarkdown, onExportJSON, isDisabled }: Expor
 
             <div className="flex items-start gap-3 rounded-2xl px-4 py-3 opacity-60 rise-in" style={{ animationDelay: '220ms' }}>
               <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] [html.light_&]:border-border/50 [html.light_&]:bg-white/75">
-                <Share2 className="h-5 w-5 text-cyan-300 [html.light_&]:text-cyan-600" />
+                <Share2 className="h-5 w-5 text-primary" />
               </span>
               <span className="flex-1">
                 <span className="block text-sm font-bold text-foreground">Share Link</span>

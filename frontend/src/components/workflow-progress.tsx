@@ -64,13 +64,13 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
 
   return (
     <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-6 shadow-[0_14px_48px_rgba(15,23,42,0.22)] [html.light_&]:border-border/50 [html.light_&]:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(248,250,255,0.78))] [html.light_&]:shadow-[0_14px_36px_rgba(88,99,135,0.12)]">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.16),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(99,102,241,0.12),transparent_28%)]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(139,92,246,0.16),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(168,85,247,0.12),transparent_28%)]" />
 
       <div className="relative flex flex-col gap-6">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
           <div className="space-y-2">
             <div className="flex items-center gap-3">
-              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary shadow-[0_0_18px_rgba(99,102,241,0.85)]" />
+              <span className="inline-flex h-2.5 w-2.5 rounded-full bg-primary shadow-[0_0_18px_rgba(139,92,246,0.85)]" />
               <span className="text-[10px] font-black uppercase tracking-[0.38em] text-muted-foreground/75">
                 Research Pipeline
               </span>
@@ -109,7 +109,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
           <div className="relative h-3 overflow-hidden rounded-full border border-white/10 bg-black/20 shadow-inner [html.light_&]:border-border/50 [html.light_&]:bg-slate-200/80">
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.03),transparent)]" />
             <div
-              className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,rgba(139,92,246,0.95),rgba(99,102,241,0.95)_45%,rgba(168,85,247,0.95))] shadow-[0_0_28px_rgba(139,92,246,0.45)] transition-all duration-1000 ease-out"
+              className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,rgba(139,92,246,0.95),rgba(168,85,247,0.95)_45%,rgba(217,70,239,0.95))] shadow-[0_0_28px_rgba(139,92,246,0.45)] transition-all duration-1000 ease-out"
               style={{ width: `${progressPercent}%` }}
             >
               <div className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.24),transparent)] shine-slow" />
@@ -137,7 +137,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                   isCompleted && 'border-primary/25 bg-primary/[0.08] shadow-[0_10px_30px_rgba(139,92,246,0.10)]',
                   isCurrent && (isLight
                     ? 'border-primary/40 bg-primary/[0.06] shadow-[0_16px_32px_rgba(139,92,246,0.14)]'
-                    : 'border-primary/45 bg-[linear-gradient(145deg,rgba(139,92,246,0.22),rgba(99,102,241,0.14))] shadow-[0_14px_36px_rgba(139,92,246,0.18)]'),
+                    : 'border-primary/45 bg-[linear-gradient(145deg,rgba(139,92,246,0.22),rgba(168,85,247,0.14))] shadow-[0_14px_36px_rgba(139,92,246,0.18)]'),
                   isPending && (isLight
                     ? 'border-slate-200 bg-white/90'
                     : 'border-white/8 bg-white/[0.03]'),
@@ -197,20 +197,20 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                       <span
                         className={cn(
                           'animate-ping absolute inline-flex h-full w-full rounded-full opacity-75',
-                          isLight ? 'bg-sky-400' : 'bg-cyan-400'
+                          isLight ? 'bg-primary/60' : 'bg-primary/80'
                         )}
                       />
                       <span
                         className={cn(
-                          'relative inline-flex h-2 w-2 rounded-full shadow-[0_0_12px_rgba(34,211,238,0.85)]',
-                          isLight ? 'bg-sky-500' : 'bg-cyan-300'
+                          'relative inline-flex h-2 w-2 rounded-full shadow-[0_0_12px_rgba(139,92,246,0.85)]',
+                          isLight ? 'bg-primary' : 'bg-primary'
                         )}
                       />
                     </span>
                     <span
                       className={cn(
                         'text-[10px] font-bold uppercase tracking-[0.2em] animate-pulse',
-                        isLight ? 'text-sky-600' : 'text-cyan-200/90'
+                        isLight ? 'text-primary' : 'text-primary-foreground/90'
                       )}
                     >
                       Active now

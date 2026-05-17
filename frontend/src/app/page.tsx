@@ -281,10 +281,10 @@ export default function Home() {
       <main className="min-h-screen bg-background selection:bg-primary/30">
       {/* Premium Header Decoration */}
       <div className="absolute inset-x-0 top-0 h-[420px] pointer-events-none opacity-60">
-        <div className="h-full w-full bg-[radial-gradient(circle_at_14%_12%,rgba(99,102,241,0.10),transparent_18%),radial-gradient(circle_at_82%_8%,rgba(139,92,246,0.08),transparent_20%),radial-gradient(circle_at_56%_34%,rgba(129,140,248,0.06),transparent_24%)] blur-xl" />
+        <div className="h-full w-full bg-[radial-gradient(circle_at_14%_12%,rgba(139,92,246,0.10),transparent_18%),radial-gradient(circle_at_82%_8%,rgba(139,92,246,0.08),transparent_20%),radial-gradient(circle_at_56%_34%,rgba(168,85,247,0.06),transparent_24%)] blur-xl" />
       </div>
       <div className="absolute inset-x-0 top-16 h-56 pointer-events-none opacity-35">
-        <div className="mx-auto h-full max-w-6xl bg-[radial-gradient(circle_at_20%_20%,rgba(99,102,241,0.12),transparent_22%),radial-gradient(circle_at_80%_10%,rgba(139,92,246,0.08),transparent_24%),radial-gradient(circle_at_60%_70%,rgba(129,140,248,0.06),transparent_26%)] blur-2xl" />
+        <div className="mx-auto h-full max-w-6xl bg-[radial-gradient(circle_at_20%_20%,rgba(139,92,246,0.12),transparent_22%),radial-gradient(circle_at_80%_10%,rgba(139,92,246,0.08),transparent_24%),radial-gradient(circle_at_60%_70%,rgba(168,85,247,0.06),transparent_26%)] blur-2xl" />
       </div>
       
       {/* API Health Alert */}
@@ -368,7 +368,7 @@ export default function Home() {
                     className={cn(
                       "flex-1 h-14 rounded-2xl text-lg font-bold transition-all duration-500 active:scale-[0.98]",
                       !isRunning
-                        ? "bg-gradient-to-r from-violet-600 via-indigo-600 to-violet-500 hover:from-violet-500 hover:via-indigo-500 hover:to-violet-400 text-white shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.55)] hover:scale-[1.01] border-none cursor-pointer"
+                        ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.55)] hover:scale-[1.01] border-none cursor-pointer"
                         : "bg-muted text-foreground shadow-none border border-border disabled:opacity-100 cursor-not-allowed"
                     )}
                     size="lg"
@@ -439,7 +439,7 @@ export default function Home() {
                     <TabsList className="relative w-full grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
                       {/* Smooth Sliding Background Bubble */}
                       <span
-                        className="absolute h-[calc(100%-8px)] rounded-[20px] bg-[linear-gradient(135deg,rgba(139,92,246,0.18),rgba(99,102,241,0.08))] border border-primary/20 shadow-[0_10px_25px_rgba(139,92,246,0.14)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
+                        className="absolute h-[calc(100%-8px)] rounded-[20px] bg-[linear-gradient(135deg,rgba(139,92,246,0.18),rgba(168,85,247,0.08))] border border-primary/20 shadow-[0_10px_25px_rgba(139,92,246,0.14)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
                         style={{
                           width: 'calc(16.666667% - 8px)',
                           left: `calc(${activeIndex * 16.666667}% + 4px)`,

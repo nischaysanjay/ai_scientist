@@ -28,7 +28,7 @@ export function EmptyState({ onSelectExample }: EmptyStateProps) {
       <div className="relative space-y-10">
         <div className="space-y-4">
           <div className="flex justify-center">
-            <div className="flex h-20 w-20 items-center justify-center rounded-[28px] border border-primary/20 bg-primary/10 text-primary shadow-[0_18px_50px_rgba(99,102,241,0.18)]">
+            <div className="flex h-20 w-20 items-center justify-center rounded-[28px] border border-primary/20 bg-primary/10 text-primary shadow-[0_18px_50px_rgba(139,92,246,0.18)]">
               <Sparkles className="h-9 w-9" />
             </div>
           </div>
