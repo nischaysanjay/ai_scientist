@@ -17,9 +17,9 @@ export function TabStatusBadge({ status, label, preview }: TabStatusBadgeProps) 
         {status === 'complete' && <Check className="h-4 w-4 text-green-500" />}
         {status === 'loading' && <Clock className="h-4 w-4 text-amber-500 animate-spin" />}
         {status === 'pending' && <AlertCircle className="h-4 w-4 text-muted-foreground" />}
-        <span className="text-sm">{label}</span>
+        <span className="hidden text-sm sm:inline">{label}</span>
       </div>
-      {preview && <span className="text-xs text-muted-foreground">({preview})</span>}
+      {preview && <span className="hidden text-xs text-muted-foreground md:inline">({preview})</span>}
     </div>
   )
 }

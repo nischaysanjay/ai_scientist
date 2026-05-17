@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useWorkflowStore } from '@/lib/store'
 import { useKeyboardShortcuts } from '@/lib/keyboard-shortcuts'
 import {
@@ -37,6 +37,7 @@ import { ExportMenu } from '@/components/export-menu'
 import { EnhancedPaperList } from '@/components/enhanced-paper-card'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal'
+import { TabStatusBadge, TabStatus } from '@/components/tab-status'
 import { 
   AlertCircle, 
   BookOpen, 
@@ -52,10 +53,13 @@ import {
 } from 'lucide-react'
 import { generateMarkdownReport, downloadFile } from '@/lib/export-utils'
 
+type ResultTab = 'validation' | 'papers' | 'summary' | 'gaps' | 'hypotheses' | 'experiment'
+
 export default function Home() {
   const [isRunning, setIsRunning] = useState(false)
   const [isStopping, setIsStopping] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
+  const [activeTab, setActiveTab] = useState<ResultTab>('validation')
   const stopRequestedRef = useRef(false)
   const abortControllerRef = useRef<AbortController | null>(null)
   const { isHealthy, error: healthError } = useApiHealth()
@@ -77,7 +81,6 @@ export default function Home() {
     isLoading,
     error,
     currentStep,
-    clearWorkflowData,
     resetWorkflow,
   } = useWorkflowStore()
 
@@ -137,8 +140,42 @@ export default function Home() {
     abortControllerRef.current?.abort()
     setIsStopping(true)
     setIsRunning(false)
-    clearWorkflowData()
-    showErrorToast('Stopped', 'Workflow stopped. Your inputs and settings were kept.')
+    showErrorToast('Stopped', 'Workflow stopped. Partial results were kept.')
+  }
+
+  useEffect(() => {
+    const tabByStep: Partial<Record<typeof currentStep, ResultTab>> = {
+      searching: 'papers',
+      processing: 'papers',
+      summarizing: 'summary',
+      'analyzing-gaps': 'gaps',
+      'generating-hypotheses': 'hypotheses',
+      'planning-experiment': 'experiment',
+      validating: 'validation',
+      complete: 'validation',
+    }
+    const nextTab = tabByStep[currentStep]
+    if (nextTab) setActiveTab(nextTab)
+  }, [currentStep])
+
+  const getTabStatus = (tab: ResultTab): TabStatus => {
+    const loadingByTab: Partial<Record<typeof currentStep, ResultTab>> = {
+      searching: 'papers',
+      processing: 'papers',
+      summarizing: 'summary',
+      'analyzing-gaps': 'gaps',
+      'generating-hypotheses': 'hypotheses',
+      'planning-experiment': 'experiment',
+      validating: 'validation',
+    }
+
+    if (loadingByTab[currentStep] === tab) return 'loading'
+    if (tab === 'papers') return papers.length > 0 ? 'complete' : 'pending'
+    if (tab === 'summary') return summary ? 'complete' : 'pending'
+    if (tab === 'gaps') return gaps ? 'complete' : 'pending'
+    if (tab === 'hypotheses') return hypotheses ? 'complete' : 'pending'
+    if (tab === 'experiment') return experimentPlan || useCustomHypothesis ? 'complete' : 'pending'
+    return validationResult ? 'complete' : 'pending'
   }
 
   // Main workflow orchestration
@@ -393,32 +430,26 @@ export default function Home() {
             {/* Results Section */}
             {papers.length > 0 ? (
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
-                <Tabs defaultValue="validation" className="space-y-6">
+                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ResultTab)} className="space-y-6">
                   <div className="premium-panel rounded-[28px] p-2">
                     <TabsList className="w-full grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
                       <TabsTrigger value="validation" className="text-xs sm:text-sm">
-                        <Target className="h-4 w-4 sm:mr-2" />
-                        <span className="hidden sm:inline">Validation</span>
+                        <TabStatusBadge status={getTabStatus('validation')} label="Validation" />
                       </TabsTrigger>
                       <TabsTrigger value="papers" className="text-xs sm:text-sm">
-                        <BookOpen className="h-4 w-4 sm:mr-2" />
-                        <span className="hidden sm:inline">Papers</span>
+                        <TabStatusBadge status={getTabStatus('papers')} label="Papers" preview={papers.length ? String(papers.length) : undefined} />
                       </TabsTrigger>
                       <TabsTrigger value="summary" className="text-xs sm:text-sm">
-                        <ShieldCheck className="h-4 w-4 sm:mr-2" />
-                        <span className="hidden sm:inline">Summary</span>
+                        <TabStatusBadge status={getTabStatus('summary')} label="Summary" />
                       </TabsTrigger>
                       <TabsTrigger value="gaps" className="text-xs sm:text-sm">
-                        <Zap className="h-4 w-4 sm:mr-2" />
-                        <span className="hidden sm:inline">Gaps</span>
+                        <TabStatusBadge status={getTabStatus('gaps')} label="Gaps" />
                       </TabsTrigger>
                       <TabsTrigger value="hypotheses" className="text-xs sm:text-sm">
-                        <Lightbulb className="h-4 w-4 sm:mr-2" />
-                        <span className="hidden sm:inline">Hypotheses</span>
+                        <TabStatusBadge status={getTabStatus('hypotheses')} label="Hypotheses" />
                       </TabsTrigger>
                       <TabsTrigger value="experiment" className="text-xs sm:text-sm">
-                        <TestTube className="h-4 w-4 sm:mr-2" />
-                        <span className="hidden sm:inline">Experiment</span>
+                        <TabStatusBadge status={getTabStatus('experiment')} label="Experiment" />
                       </TabsTrigger>
                     </TabsList>
                   </div>
@@ -601,7 +632,7 @@ export default function Home() {
                         {isLoading && currentStep === 'summarizing' && !summary ? (
                           <ResultSkeleton />
                         ) : (
-                          <ResultContent content={summary || ''} />
+                          <ResultContent content={summary || ''} isStreaming={isLoading && currentStep === 'summarizing'} />
                         )}
                       </ResultSection>
                     )}
@@ -634,7 +665,7 @@ export default function Home() {
                         {isLoading && currentStep === 'analyzing-gaps' && !gaps ? (
                           <ResultSkeleton />
                         ) : (
-                          <ResultContent content={gaps || ''} />
+                          <ResultContent content={gaps || ''} isStreaming={isLoading && currentStep === 'analyzing-gaps'} />
                         )}
                       </ResultSection>
                     )}
@@ -667,7 +698,7 @@ export default function Home() {
                         {isLoading && currentStep === 'generating-hypotheses' && !hypotheses ? (
                           <ResultSkeleton />
                         ) : (
-                          <ResultContent content={hypotheses || ''} />
+                          <ResultContent content={hypotheses || ''} isStreaming={isLoading && currentStep === 'generating-hypotheses'} />
                         )}
                       </ResultSection>
                     )}
@@ -700,7 +731,7 @@ export default function Home() {
                         {isLoading && currentStep === 'planning-experiment' && !experimentPlan ? (
                           <ResultSkeleton />
                         ) : experimentPlan ? (
-                          <ResultContent content={experimentPlan} />
+                          <ResultContent content={experimentPlan} isStreaming={isLoading && currentStep === 'planning-experiment'} />
                         ) : useCustomHypothesis ? (
                           <div className="premium-card rounded-[24px] p-8 border-dashed border-border text-center">
                             <p className="text-sm text-muted-foreground italic">

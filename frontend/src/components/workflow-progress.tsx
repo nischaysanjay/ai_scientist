@@ -52,7 +52,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
   const { effectiveTheme } = useTheme()
   const isLight = effectiveTheme === 'light'
   const currentIndex = STEPS.findIndex((step) => step.key === currentStep)
-  const progressPercent = isComplete ? 100 : currentIndex < 0 ? 0 : (currentIndex / STEPS.length) * 100
+  const progressPercent = isComplete ? 100 : currentIndex < 0 ? 0 : ((currentIndex + 1) / STEPS.length) * 100
   const activeStep = isComplete
     ? { label: 'Complete', detail: 'All research stages finished successfully.' }
     : currentIndex >= 0
