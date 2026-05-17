@@ -368,7 +368,7 @@ export default function Home() {
                     className={cn(
                       "flex-1 h-14 rounded-2xl text-lg font-bold transition-all duration-500 active:scale-[0.98]",
                       !isRunning
-                        ? "bg-primary hover:bg-primary/90 text-primary-foreground shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.55)] hover:scale-[1.01] border-none cursor-pointer"
+                        ? "bg-primary/10 border border-primary/40 text-primary hover:bg-primary/20 [html.light_&]:bg-primary [html.light_&]:text-primary-foreground [html.light_&]:hover:bg-primary/90 [html.light_&]:border-none shadow-[0_4px_20px_rgba(139,92,246,0.15)] [html.light_&]:shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:shadow-[0_0_32px_rgba(139,92,246,0.45)] hover:scale-[1.01] cursor-pointer"
                         : "bg-muted text-foreground shadow-none border border-border disabled:opacity-100 cursor-not-allowed"
                     )}
                     size="lg"
@@ -439,11 +439,11 @@ export default function Home() {
                     <TabsList className="relative w-full grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
                       {/* Smooth Sliding Background Bubble */}
                       <span
-                        className="absolute h-[calc(100%-8px)] rounded-[20px] bg-[linear-gradient(135deg,rgba(139,92,246,0.18),rgba(168,85,247,0.08))] border border-primary/20 shadow-[0_10px_25px_rgba(139,92,246,0.14)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
+                        className="absolute h-[calc(100%-4px)] rounded-[22px] bg-[linear-gradient(135deg,rgba(139,92,246,0.18),rgba(168,85,247,0.08))] border border-primary/20 shadow-[0_10px_25px_rgba(139,92,246,0.14)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
                         style={{
-                          width: 'calc(16.666667% - 8px)',
-                          left: `calc(${activeIndex * 16.666667}% + 4px)`,
-                          top: '4px',
+                          width: 'calc(16.666667% - 4px)',
+                          left: `calc(${activeIndex * 16.666667}% + 2px)`,
+                          top: '2px',
                         }}
                       />
 
