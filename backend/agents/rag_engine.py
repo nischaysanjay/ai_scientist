@@ -1,6 +1,7 @@
 from langchain_ollama import OllamaLLM
 from backend.utils.prompts import RESEARCH_SUMMARY_PROMPT
 from typing import Generator
+import ollama
 
 def generate_summary(vector_store, topic, model_name="mistral"):
     """
@@ -15,11 +16,12 @@ def generate_summary(vector_store, topic, model_name="mistral"):
 
 def stream_summary(vector_store, topic, model_name="mistral") -> Generator[str, None, None]:
     """
-    Streams a research summary token-by-token using RAG and Ollama.
+    Streams a research summary token-by-token using Ollama native streaming.
     """
-    llm = OllamaLLM(model=model_name, num_gpu=100, timeout=300)
     docs = vector_store.similarity_search(topic, k=5)
     context = "\n\n".join([doc.page_content for doc in docs])
-    chain = RESEARCH_SUMMARY_PROMPT | llm
-    for chunk in chain.stream({"context": context, "topic": topic}):
-        yield chunk
+    prompt = RESEARCH_SUMMARY_PROMPT.format(context=context, topic=topic)
+    stream = ollama.generate(model=model_name, prompt=prompt, stream=True)
+    for chunk in stream:
+        if chunk.response:
+            yield chunk.response

@@ -1,6 +1,7 @@
 from langchain_ollama import OllamaLLM
 from backend.utils.prompts import HYPOTHESIS_PROMPT
 from typing import Generator
+import ollama
 
 def generate_hypotheses(research_gaps, topic, model_name="mistral"):
     """
@@ -13,9 +14,10 @@ def generate_hypotheses(research_gaps, topic, model_name="mistral"):
 
 def stream_hypotheses(research_gaps, topic, model_name="mistral") -> Generator[str, None, None]:
     """
-    Streams generated research hypotheses token-by-token.
+    Streams generated research hypotheses token-by-token using Ollama native streaming.
     """
-    llm = OllamaLLM(model=model_name, num_gpu=100, timeout=300)
-    chain = HYPOTHESIS_PROMPT | llm
-    for chunk in chain.stream({"gaps": research_gaps, "topic": topic}):
-        yield chunk
+    prompt = HYPOTHESIS_PROMPT.format(gaps=research_gaps, topic=topic)
+    stream = ollama.generate(model=model_name, prompt=prompt, stream=True)
+    for chunk in stream:
+        if chunk.response:
+            yield chunk.response
