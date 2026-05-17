@@ -30,15 +30,22 @@ async function fetchSSEStream(
   const decoder = new TextDecoder()
   let accumulated = ''
   let isDone = false
+  let buffer = ''
 
   while (!isDone) {
     const { done, value } = await reader.read()
-    if (done) break
+    if (done) {
+      buffer += decoder.decode()
+      break
+    }
 
-    const text = decoder.decode(value, { stream: true })
-    const lines = text.split('\n')
+    buffer += decoder.decode(value, { stream: true })
+    const events = buffer.split('\n\n')
+    buffer = events.pop() ?? ''
 
-    for (const line of lines) {
+    for (const event of events) {
+      const line = event.split('\n').find((entry) => entry.startsWith('data: '))
+      if (!line) continue
       if (!line.startsWith('data: ')) continue
       const payload = line.slice(6).trim()
       if (payload === '[DONE]') {
@@ -54,6 +61,19 @@ async function fetchSSEStream(
         }
       } catch {
         // skip malformed lines
+      }
+    }
+  }
+
+  if (!isDone && buffer.trim()) {
+    const line = buffer.split('\n').find((entry) => entry.startsWith('data: '))
+    const payload = line?.slice(6).trim()
+    if (payload && payload !== '[DONE]') {
+      const parsed = JSON.parse(payload)
+      if (parsed.error) throw new Error(parsed.error)
+      if (parsed.token) {
+        accumulated += parsed.token
+        onToken(parsed.token)
       }
     }
   }

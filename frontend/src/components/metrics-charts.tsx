@@ -326,7 +326,7 @@ export function NDIChart({ ndi }: { ndi: NDIResult }) {
               dataKey="value"
               position="right"
               offset={15}
-              formatter={(value: number | string) => `${Number(value).toFixed(1)}%`}
+              formatter={(value) => `${Number(value ?? 0).toFixed(1)}%`}
               className="fill-foreground text-xs font-black tabular-nums"
             />
           </Bar>

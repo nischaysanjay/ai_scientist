@@ -6,10 +6,6 @@ import { useKeyboardShortcuts } from '@/lib/keyboard-shortcuts'
 import {
   useSearchPapers,
   useProcessPDFs,
-  useGenerateSummary,
-  useIdentifyGaps,
-  useGenerateHypotheses,
-  usePlanExperiment,
   useValidateHypothesis,
 } from '@/lib/hooks'
 import {
@@ -87,10 +83,6 @@ export default function Home() {
 
   const { searchPapers } = useSearchPapers()
   const { processPDFs } = useProcessPDFs()
-  const { generateSummary } = useGenerateSummary()
-  const { identifyGaps } = useIdentifyGaps()
-  const { generateHypotheses: genHypotheses } = useGenerateHypotheses()
-  const { planExperiment } = usePlanExperiment()
   const { validateHypothesis: validateHyp } = useValidateHypothesis()
   const { streamSummary } = useStreamSummary()
   const { streamGaps } = useStreamGaps()
@@ -606,7 +598,7 @@ export default function Home() {
                         icon={<BookOpen className="h-5 w-5" />}
                         contentToCopy={summary || ''}
                       >
-                        {isLoading && currentStep === 'summarizing' ? (
+                        {isLoading && currentStep === 'summarizing' && !summary ? (
                           <ResultSkeleton />
                         ) : (
                           <ResultContent content={summary || ''} />
@@ -639,7 +631,7 @@ export default function Home() {
                         icon={<Zap className="h-5 w-5" />}
                         contentToCopy={gaps || ''}
                       >
-                        {isLoading && currentStep === 'analyzing-gaps' ? (
+                        {isLoading && currentStep === 'analyzing-gaps' && !gaps ? (
                           <ResultSkeleton />
                         ) : (
                           <ResultContent content={gaps || ''} />
@@ -672,7 +664,7 @@ export default function Home() {
                         icon={<Lightbulb className="h-5 w-5" />}
                         contentToCopy={hypotheses || ''}
                       >
-                        {isLoading && currentStep === 'generating-hypotheses' ? (
+                        {isLoading && currentStep === 'generating-hypotheses' && !hypotheses ? (
                           <ResultSkeleton />
                         ) : (
                           <ResultContent content={hypotheses || ''} />
@@ -705,7 +697,7 @@ export default function Home() {
                         icon={<TestTube className="h-5 w-5" />}
                         contentToCopy={experimentPlan || ''}
                       >
-                        {isLoading && currentStep === 'planning-experiment' ? (
+                        {isLoading && currentStep === 'planning-experiment' && !experimentPlan ? (
                           <ResultSkeleton />
                         ) : experimentPlan ? (
                           <ResultContent content={experimentPlan} />
