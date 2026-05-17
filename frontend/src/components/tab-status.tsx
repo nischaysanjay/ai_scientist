@@ -34,7 +34,7 @@ export function TabStatusIndicator({ completedSteps, totalSteps }: TabStatusIndi
 
   return (
     <div className="flex items-center gap-2 text-xs">
-      <div className="h-1.5 w-24 rounded-full bg-white/10 overflow-hidden">
+      <div className="h-1.5 w-24 rounded-full bg-white/10 overflow-hidden [html.light_&]:bg-secondary/70">
         <div
           className="h-full bg-gradient-to-r from-primary to-cyan-500 transition-all duration-300"
           style={{ width: `${percent}%` }}

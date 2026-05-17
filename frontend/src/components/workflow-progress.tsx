@@ -62,7 +62,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
   const visibleStageCount = isComplete ? STEPS.length : currentIndex < 0 ? 0 : currentIndex + 1
 
   return (
-    <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-6 shadow-[0_14px_48px_rgba(15,23,42,0.22)]">
+    <div className="relative overflow-hidden rounded-[28px] border border-white/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.08),rgba(255,255,255,0.03))] p-6 shadow-[0_14px_48px_rgba(15,23,42,0.22)] [html.light_&]:border-border/50 [html.light_&]:bg-[linear-gradient(145deg,rgba(255,255,255,0.92),rgba(248,250,255,0.78))] [html.light_&]:shadow-[0_14px_36px_rgba(88,99,135,0.12)]">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(99,102,241,0.16),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(34,211,238,0.12),transparent_28%)]" />
 
       <div className="relative flex flex-col gap-6">
@@ -93,7 +93,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
                 {Math.round(progressPercent)}%
               </div>
             </div>
-            <div className="min-w-[96px] rounded-2xl border border-white/10 bg-black/15 px-4 py-3 text-right backdrop-blur-md">
+            <div className="min-w-[96px] rounded-2xl border border-white/10 bg-black/15 px-4 py-3 text-right backdrop-blur-md [html.light_&]:border-border/50 [html.light_&]:bg-white/70">
               <div className="text-[10px] font-black uppercase tracking-[0.28em] text-muted-foreground/60">
                 Stage
               </div>
@@ -105,7 +105,7 @@ export function WorkflowProgress({ currentStep, isComplete }: WorkflowProgressPr
         </div>
 
         <div className="space-y-3">
-          <div className="relative h-3 overflow-hidden rounded-full border border-white/10 bg-black/20 shadow-inner">
+          <div className="relative h-3 overflow-hidden rounded-full border border-white/10 bg-black/20 shadow-inner [html.light_&]:border-border/50 [html.light_&]:bg-slate-200/80">
             <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.03),transparent)]" />
             <div
               className="absolute inset-y-0 left-0 rounded-full bg-[linear-gradient(90deg,rgba(99,102,241,0.95),rgba(129,140,248,0.95)_35%,rgba(34,211,238,0.95))] shadow-[0_0_28px_rgba(99,102,241,0.35)] transition-all duration-1000 ease-out"

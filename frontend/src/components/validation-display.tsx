@@ -23,10 +23,10 @@ interface ValidationBadgeProps {
 
 export function ValidationBadge({ classification }: ValidationBadgeProps) {
   const variants = {
-    'Strong & Novel': 'bg-green-500/20 text-green-400 border-green-500/50',
-    'Novel but Weak': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50',
-    'Stable but Known': 'bg-blue-500/20 text-blue-400 border-blue-500/50',
-    'Weak & Redundant': 'bg-red-500/20 text-red-400 border-red-500/50',
+    'Strong & Novel': 'bg-green-500/20 text-green-400 border-green-500/50 [html.light_&]:bg-green-500/14 [html.light_&]:text-green-700 [html.light_&]:border-green-500/45',
+    'Novel but Weak': 'bg-yellow-500/20 text-yellow-400 border-yellow-500/50 [html.light_&]:bg-yellow-500/18 [html.light_&]:text-yellow-700 [html.light_&]:border-yellow-500/45',
+    'Stable but Known': 'bg-blue-500/20 text-blue-400 border-blue-500/50 [html.light_&]:bg-blue-500/14 [html.light_&]:text-blue-700 [html.light_&]:border-blue-500/45',
+    'Weak & Redundant': 'bg-red-500/20 text-red-400 border-red-500/50 [html.light_&]:bg-red-500/14 [html.light_&]:text-red-700 [html.light_&]:border-red-500/45',
   }
 
   return (
@@ -122,9 +122,15 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip 
-                contentStyle={{ borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.8)', color: '#fff', fontSize: '12px' }}
-                itemStyle={{ color: '#fff' }}
+              <Tooltip
+                contentStyle={{
+                  borderRadius: '12px',
+                  border: '1px solid hsl(var(--border))',
+                  background: 'hsl(var(--popover))',
+                  color: 'hsl(var(--popover-foreground))',
+                  fontSize: '12px',
+                }}
+                itemStyle={{ color: 'hsl(var(--popover-foreground))' }}
               />
             </PieChart>
         </div>
@@ -149,11 +155,11 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
                   <div className="flex items-start justify-between mb-3 text-reveal">
                     <div className="flex items-center gap-2">
                       {detail.classification === 'CONTRADICT' ? (
-                        <Badge variant="destructive" className="bg-red-500/20 text-red-400 border-red-500/50 animate-in zoom-in-50 duration-300">
+                        <Badge variant="destructive" className="bg-red-500/20 text-red-400 border-red-500/50 animate-in zoom-in-50 duration-300 [html.light_&]:bg-red-500/14 [html.light_&]:text-red-700 [html.light_&]:border-red-500/45">
                           CONTRADICT
                         </Badge>
                       ) : detail.classification === 'SUPPORT' ? (
-                        <Badge className="bg-green-500/20 text-green-400 border-green-500/50 animate-in zoom-in-50 duration-300">
+                        <Badge className="bg-green-500/20 text-green-400 border-green-500/50 animate-in zoom-in-50 duration-300 [html.light_&]:bg-green-500/14 [html.light_&]:text-green-700 [html.light_&]:border-green-500/45">
                           SUPPORT
                         </Badge>
                       ) : (
@@ -203,7 +209,7 @@ export function NDIResultDisplay({ ndi }: { ndi: NDIResult }) {
           <span>Similarity with Literature</span>
           <span>{(ndi.max_similarity * 100).toFixed(1)}%</span>
         </div>
-        <div className="relative h-2 w-full bg-cyan-950 rounded-full overflow-hidden">
+        <div className="relative h-2 w-full bg-cyan-950 rounded-full overflow-hidden [html.light_&]:bg-cyan-100">
           <div
             className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 shadow-[0_0_15px_rgba(6,182,212,0.6)] transition-all duration-1000 relative"
             style={{ width: `${ndi.max_similarity * 100}%` }}
@@ -265,7 +271,7 @@ export function MetricsRadarDisplay({ metrics }: { metrics: ValidationMetrics })
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-[220px]">
       <RadarChart cx="50%" cy="50%" outerRadius="70%" width={280} height={240} data={radarData}>
-        <PolarGrid stroke="rgba(255,255,255,0.15)" />
+        <PolarGrid stroke="hsl(var(--border))" />
         <PolarAngleAxis 
           dataKey="subject" 
           tick={{ fill: 'currentColor', fontSize: 10, fontWeight: 'bold' }}
@@ -280,9 +286,15 @@ export function MetricsRadarDisplay({ metrics }: { metrics: ValidationMetrics })
           fill="#8b5cf6"
           fillOpacity={0.35}
         />
-        <Tooltip 
-          contentStyle={{ borderRadius: '12px', border: '1px solid rgba(255,255,255,0.1)', background: 'rgba(0,0,0,0.8)', color: '#fff', fontSize: '12px' }}
-          itemStyle={{ color: '#fff' }}
+        <Tooltip
+          contentStyle={{
+            borderRadius: '12px',
+            border: '1px solid hsl(var(--border))',
+            background: 'hsl(var(--popover))',
+            color: 'hsl(var(--popover-foreground))',
+            fontSize: '12px',
+          }}
+          itemStyle={{ color: 'hsl(var(--popover-foreground))' }}
           formatter={(value) => [typeof value === 'number' ? `${value.toFixed(1)}%` : 'N/A', 'Score']}
         />
       </RadarChart>

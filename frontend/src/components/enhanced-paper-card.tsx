@@ -51,7 +51,7 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
 
         <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
           {paper.published && (
-            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 transition-colors duration-300 group-hover:bg-white/[0.07]">
+            <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-3 py-1.5 transition-colors duration-300 group-hover:bg-white/[0.07] [html.light_&]:border-border/50 [html.light_&]:bg-white/75 [html.light_&]:group-hover:bg-white">
               <Clock className="h-3.5 w-3.5 text-amber-400" />
               <span>{new Date(paper.published).toLocaleDateString()}</span>
             </div>
@@ -70,7 +70,7 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
               </button>
 
               {expanded && (
-                <div className="rounded-2xl border border-white/8 bg-black/10 p-4 text-sm leading-relaxed text-muted-foreground">
+                <div className="rounded-2xl border border-white/8 bg-black/10 p-4 text-sm leading-relaxed text-muted-foreground [html.light_&]:border-border/50 [html.light_&]:bg-white/70">
                   {paper.summary}
                 </div>
               )}

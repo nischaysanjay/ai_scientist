@@ -87,10 +87,10 @@ export function ExportMenu({ onExportMarkdown, onExportJSON, isDisabled }: Expor
               <button
                 key={item.key}
                 onClick={item.action}
-                className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-white/[0.05] rise-in group"
+                className="flex w-full items-start gap-3 rounded-2xl px-4 py-3 text-left transition-all hover:bg-white/[0.05] rise-in group [html.light_&]:hover:bg-primary/[0.06]"
                 style={{ animationDelay: `${index * 70}ms` }}
               >
-                <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] transition-transform duration-300 group-hover:scale-105 ambient-pulse">
+                <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] transition-transform duration-300 group-hover:scale-105 ambient-pulse [html.light_&]:border-border/50 [html.light_&]:bg-white/75">
                   {item.icon}
                 </span>
                 <span className="flex-1">
@@ -101,11 +101,11 @@ export function ExportMenu({ onExportMarkdown, onExportJSON, isDisabled }: Expor
               </button>
             ))}
 
-            <div className="mx-2 h-px bg-white/8" />
+            <div className="mx-2 h-px bg-white/8 [html.light_&]:bg-border/70" />
 
             <div className="flex items-start gap-3 rounded-2xl px-4 py-3 opacity-60 rise-in" style={{ animationDelay: '220ms' }}>
-              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04]">
-                <Share2 className="h-5 w-5 text-cyan-300" />
+              <span className="mt-0.5 flex h-10 w-10 shrink-0 items-center justify-center rounded-2xl border border-white/10 bg-white/[0.04] [html.light_&]:border-border/50 [html.light_&]:bg-white/75">
+                <Share2 className="h-5 w-5 text-cyan-300 [html.light_&]:text-cyan-600" />
               </span>
               <span className="flex-1">
                 <span className="block text-sm font-bold text-foreground">Share Link</span>

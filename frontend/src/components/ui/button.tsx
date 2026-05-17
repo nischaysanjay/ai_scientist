@@ -14,9 +14,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     const variants = {
       default: 'border border-primary/30 bg-[linear-gradient(135deg,rgba(99,102,241,0.92),rgba(129,140,248,0.88)_45%,rgba(34,211,238,0.72))] text-primary-foreground shadow-[0_14px_32px_rgba(99,102,241,0.26)] hover:-translate-y-0.5 hover:shadow-[0_18px_40px_rgba(99,102,241,0.30)]',
       destructive: 'border border-destructive/35 bg-[linear-gradient(135deg,rgba(239,68,68,0.92),rgba(220,38,38,0.88))] text-destructive-foreground shadow-[0_14px_32px_rgba(239,68,68,0.22)] hover:-translate-y-0.5 hover:shadow-[0_18px_38px_rgba(239,68,68,0.26)]',
-      outline: 'border border-white/10 bg-white/[0.04] text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/[0.08]',
-      secondary: 'border border-white/10 bg-white/[0.05] text-foreground shadow-[0_10px_24px_rgba(15,23,42,0.12)] backdrop-blur-md hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.08]',
-      ghost: 'border border-transparent text-foreground/88 hover:border-white/10 hover:bg-white/[0.05] hover:text-foreground',
+      outline: 'border border-white/10 bg-white/[0.04] text-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.05)] backdrop-blur-md hover:-translate-y-0.5 hover:border-primary/30 hover:bg-primary/[0.08] [html.light_&]:border-border/50 [html.light_&]:bg-white/70 [html.light_&]:shadow-[inset_0_1px_0_rgba(255,255,255,0.65)]',
+      secondary: 'border border-white/10 bg-white/[0.05] text-foreground shadow-[0_10px_24px_rgba(15,23,42,0.12)] backdrop-blur-md hover:-translate-y-0.5 hover:border-white/20 hover:bg-white/[0.08] [html.light_&]:border-border/50 [html.light_&]:bg-white/80 [html.light_&]:shadow-[0_10px_24px_rgba(88,99,135,0.10)] [html.light_&]:hover:border-primary/25 [html.light_&]:hover:bg-white',
+      ghost: 'border border-transparent text-foreground/88 hover:border-white/10 hover:bg-white/[0.05] hover:text-foreground [html.light_&]:hover:border-border/50 [html.light_&]:hover:bg-muted/70',
       link: 'text-primary underline-offset-4 hover:underline',
     }
 

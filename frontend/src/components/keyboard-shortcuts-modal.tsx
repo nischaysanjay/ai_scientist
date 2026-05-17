@@ -58,7 +58,7 @@ export function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShortcutsMod
   return (
     <>
       <div
-        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-md"
+        className="fixed inset-0 z-40 bg-black/50 backdrop-blur-md [html.light_&]:bg-slate-950/35"
         onClick={onClose}
       />
 
@@ -97,7 +97,7 @@ export function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShortcutsMod
                       <div className="flex items-center gap-1">
                         {shortcut.keys.map((key, keyIdx) => (
                           <div key={keyIdx} className="flex items-center gap-1">
-                            <kbd className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 font-mono text-xs font-semibold text-foreground">
+                            <kbd className="rounded-xl border border-white/10 bg-white/[0.05] px-3 py-1.5 font-mono text-xs font-semibold text-foreground [html.light_&]:border-border/50 [html.light_&]:bg-white/75">
                               {key}
                             </kbd>
                             {keyIdx < shortcut.keys.length - 1 && (

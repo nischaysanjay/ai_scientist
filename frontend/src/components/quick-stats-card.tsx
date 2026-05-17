@@ -74,7 +74,7 @@ export function QuickStatsCard({ papersFound, currentStep, isLoading, estimatedT
 
         {isComplete && papersFound > 0 && (
           <div className="premium-card rounded-2xl px-4 py-3 rise-in" style={{ animationDelay: '300ms' }}>
-            <div className="relative flex items-center gap-3 text-emerald-300">
+            <div className="relative flex items-center gap-3 text-emerald-300 [html.light_&]:text-emerald-700">
               <CheckCircle2 className="h-4 w-4" />
               <span className="text-sm font-semibold">Results are ready to explore</span>
             </div>

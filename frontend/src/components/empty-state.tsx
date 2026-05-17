@@ -88,7 +88,7 @@ export function EmptyState({ onSelectExample }: EmptyStateProps) {
             {features.map((feature) => (
               <span
                 key={feature}
-                className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground rise-in"
+                className="rounded-full border border-white/10 bg-white/[0.04] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.22em] text-muted-foreground rise-in [html.light_&]:border-border/50 [html.light_&]:bg-white/70"
                 style={{ animationDelay: `${700 + features.indexOf(feature) * 70}ms` }}
               >
                 {feature}

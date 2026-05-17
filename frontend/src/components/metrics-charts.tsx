@@ -50,7 +50,7 @@ function ChartCard({
           <p className="text-xs font-semibold text-muted-foreground/70 uppercase tracking-widest">{description}</p>
         </div>
       </div>
-      <div className="min-h-0 flex-1 relative rounded-[28px] border border-white/5 bg-black/5 px-2 py-3 dark:bg-white/[0.02]">
+      <div className="min-h-0 flex-1 relative rounded-[28px] border border-white/5 bg-black/5 px-2 py-3 dark:bg-white/[0.02] [html.light_&]:border-border/40 [html.light_&]:bg-white/55">
         {children}
       </div>
       {footer ? <div className="mt-5">{footer}</div> : null}
@@ -68,7 +68,7 @@ function ChartStatRow({
       {items.map((item) => (
         <div
           key={item.label}
-          className="glass flex min-h-16 flex-col items-center justify-center rounded-2xl border-white/10 px-2 py-2.5 text-center transition-all duration-300 hover:bg-primary/5"
+          className="glass flex min-h-16 flex-col items-center justify-center rounded-2xl border-white/10 px-2 py-2.5 text-center transition-all duration-300 hover:bg-primary/5 [html.light_&]:border-border/40"
         >
           <div className="mb-1 flex items-center gap-1.5">
             {item.dotColor ? (
@@ -101,7 +101,7 @@ function ChartTooltip({
   const value = typeof item.value === 'number' ? `${item.value.toFixed(1)}%` : item.value
 
   return (
-    <div className="glass-card rounded-2xl border-primary/20 px-4 py-3 shadow-2xl shadow-black/40">
+    <div className="glass-card rounded-2xl border-primary/20 px-4 py-3 shadow-2xl shadow-black/40 [html.light_&]:shadow-slate-400/20">
       <p className="text-[10px] font-black uppercase tracking-[0.2em] text-primary/80 mb-1">{name}</p>
       <p className="text-xl font-black text-foreground drop-shadow-sm">{value}</p>
     </div>
