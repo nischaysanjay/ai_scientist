@@ -5,7 +5,7 @@ def generate_summary(vector_store, topic, model_name="mistral"):
     """
     Generates a research summary using RAG and Ollama.
     """
-    llm = OllamaLLM(model=model_name, num_gpu=100)
+    llm = OllamaLLM(model=model_name, num_gpu=100, timeout=300)
     docs = vector_store.similarity_search(topic, k=5)
     context = "\n\n".join([doc.page_content for doc in docs])
     chain = RESEARCH_SUMMARY_PROMPT | llm

@@ -5,7 +5,7 @@ def plan_experiments(hypotheses, model_name="mistral"):
     """
     Generates an experiment plan for the provided hypotheses.
     """
-    llm = OllamaLLM(model=model_name, num_gpu=100)
+    llm = OllamaLLM(model=model_name, num_gpu=100, timeout=300)
     chain = EXPERIMENT_PLAN_PROMPT | llm
     experiment_plan = chain.invoke({"hypothesis": hypotheses})
     return experiment_plan

@@ -14,7 +14,7 @@ def _summarize_one_conflict(claim_1, claim_2, model_name):
         f"Claim B: {claim_2}\n\n"
         "Nature of conflict:"
     )
-    llm = OllamaLLM(model=model_name, num_gpu=100)
+    llm = OllamaLLM(model=model_name, num_gpu=100, timeout=300)
     return llm.invoke(prompt).strip()
 
 def calculate_cdm(vector_store, model_name="mistral", max_claims=10):
