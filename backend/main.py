@@ -17,7 +17,9 @@ load_dotenv()
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel, Field
+import json
 
 logging.basicConfig(
     level=logging.INFO,
@@ -288,6 +290,87 @@ async def validate_hypothesis(request: ValidateHypothesisRequest):
         return {"status": "success", "validation_result": result}
     except Exception as exc:
         raise _server_error("validating hypothesis", exc) from exc
+
+
+# ========== Streaming Endpoints ==========
+
+@app.post("/api/stream-summary")
+async def stream_summary(request: GenerateSummaryRequest):
+    """
+    Stream research summary token-by-token via Server-Sent Events.
+    """
+    async def event_generator():
+        try:
+            extracted_data = [item.model_dump() for item in request.extracted_data]
+            chunks = await asyncio.to_thread(text_splitter.split_text, extracted_data)
+            vs = await asyncio.to_thread(vector_store.create_vector_store, chunks, request.topic)
+            gen = rag_engine.stream_summary(vs, request.topic, request.model_name)
+            for token in gen:
+                yield f"data: {json.dumps({'token': token})}\n\n"
+            yield "data: [DONE]\n\n"
+        except Exception as exc:
+            logger.error("Error streaming summary: %s", exc)
+            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+@app.post("/api/stream-gaps")
+async def stream_gaps(request: IdentifyGapsRequest):
+    """
+    Stream research gaps token-by-token via Server-Sent Events.
+    """
+    async def event_generator():
+        try:
+            gen = gap_detector.stream_gaps(request.summary, request.topic, request.model_name)
+            for token in gen:
+                yield f"data: {json.dumps({'token': token})}\n\n"
+            yield "data: [DONE]\n\n"
+        except Exception as exc:
+            logger.error("Error streaming gaps: %s", exc)
+            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+@app.post("/api/stream-hypotheses")
+async def stream_hypotheses(request: GenerateHypothesesRequest):
+    """
+    Stream hypotheses token-by-token via Server-Sent Events.
+    """
+    async def event_generator():
+        try:
+            gen = hypothesis_agent.stream_hypotheses(request.gaps, request.topic, request.model_name)
+            for token in gen:
+                yield f"data: {json.dumps({'token': token})}\n\n"
+            yield "data: [DONE]\n\n"
+        except Exception as exc:
+            logger.error("Error streaming hypotheses: %s", exc)
+            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
+
+
+@app.post("/api/stream-experiment")
+async def stream_experiment(request: PlanExperimentRequest):
+    """
+    Stream experiment plan token-by-token via Server-Sent Events.
+    """
+    async def event_generator():
+        try:
+            gen = experiment_agent.stream_experiment_plan(request.hypotheses, request.model_name)
+            for token in gen:
+                yield f"data: {json.dumps({'token': token})}\n\n"
+            yield "data: [DONE]\n\n"
+        except Exception as exc:
+            logger.error("Error streaming experiment plan: %s", exc)
+            yield f"data: {json.dumps({'error': str(exc)})}\n\n"
+
+    return StreamingResponse(event_generator(), media_type="text/event-stream",
+                             headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"})
 
 
 if __name__ == "__main__":
