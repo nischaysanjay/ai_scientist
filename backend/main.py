@@ -186,6 +186,9 @@ async def search_papers(request: SearchPapersRequest):
         logger.error("Timeout searching papers for topic: %s", request.topic)
         raise HTTPException(status_code=504, detail="Timeout searching papers. The arXiv API might be rate limiting us.") from exc
     except Exception as exc:
+        if "429" in str(exc) or "HTTP Error 429" in str(exc) or "UnexpectedEmptyPageError" in str(exc):
+            logger.warning("arXiv rate limit or block hit for topic: %s", request.topic)
+            raise HTTPException(status_code=429, detail="The arXiv API is currently rate limiting requests. Please wait a few seconds and try again.") from exc
         raise _server_error("searching papers", exc) from exc
 
 
