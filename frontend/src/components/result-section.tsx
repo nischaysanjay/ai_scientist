@@ -114,60 +114,6 @@ export function ResultSection({
               {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
             </Button>
           )}
-
-export function ResultSection({
-  title,
-  children,
-  icon,
-  className,
-  actions,
-  contentToCopy,
-}: ResultSectionProps) {
-  const [copied, setCopied] = useState(false)
-
-  const handleCopy = async () => {
-    if (!contentToCopy) return
-
-    try {
-      await navigator.clipboard.writeText(contentToCopy)
-      setCopied(true)
-      showSuccessToast('Copied', 'Content copied to clipboard')
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      showErrorToast('Copy Failed', 'Clipboard access was unavailable.')
-    }
-  }
-
-  return (
-    <div className={cn(
-      'premium-panel rounded-[30px] p-6 transition-all duration-300 motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-4',
-      className
-    )}>
-      <div className="relative flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          {icon && (
-            <div className="flex h-11 w-11 items-center justify-center rounded-2xl border border-primary/20 bg-primary/10 text-primary">
-              {icon}
-            </div>
-          )}
-          <div>
-            <div className="premium-label">Result</div>
-            <h3 className="text-xl font-black tracking-tight text-foreground">{title}</h3>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2">
-          {actions}
-          {contentToCopy && (
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={handleCopy}
-              className="h-9 w-9 rounded-xl hover:bg-primary/10 hover:text-primary transition-colors"
-            >
-              {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-            </Button>
-          )}
         </div>
       </div>
 
