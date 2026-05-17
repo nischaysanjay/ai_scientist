@@ -372,7 +372,7 @@ export const useStreamSummary = () => {
         const result = await fetchSSEStream(
           '/api/stream-summary',
           { extracted_data: extractedData, topic, model_name: modelName },
-          (token) => setSummary(useWorkflowStore.getState().summary + token),
+          (token) => useWorkflowStore.setState(s => ({ summary: (s.summary ?? '') + token })),
           signal
         )
 
@@ -416,7 +416,7 @@ export const useStreamGaps = () => {
         const result = await fetchSSEStream(
           '/api/stream-gaps',
           { summary, topic, model_name: modelName },
-          (token) => setGaps(useWorkflowStore.getState().gaps + token),
+          (token) => useWorkflowStore.setState(s => ({ gaps: (s.gaps ?? '') + token })),
           signal
         )
 
@@ -460,7 +460,7 @@ export const useStreamHypotheses = () => {
         const result = await fetchSSEStream(
           '/api/stream-hypotheses',
           { gaps, topic, model_name: modelName },
-          (token) => setHypotheses(useWorkflowStore.getState().hypotheses + token),
+          (token) => useWorkflowStore.setState(s => ({ hypotheses: (s.hypotheses ?? '') + token })),
           signal
         )
 
@@ -503,7 +503,7 @@ export const useStreamExperiment = () => {
         const result = await fetchSSEStream(
           '/api/stream-experiment',
           { hypotheses, model_name: modelName },
-          (token) => setExperimentPlan(useWorkflowStore.getState().experimentPlan + token),
+          (token) => useWorkflowStore.setState(s => ({ experimentPlan: (s.experimentPlan ?? '') + token })),
           signal
         )
 

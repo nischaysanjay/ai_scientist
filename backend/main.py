@@ -294,6 +294,22 @@ async def validate_hypothesis(request: ValidateHypothesisRequest):
 
 # ========== Streaming Endpoints ==========
 
+_SENTINEL = object()
+
+async def _iter_sync_gen(gen):
+    """
+    Safely iterate a synchronous generator inside an async context.
+    Each call to next() is offloaded to a thread pool executor so the
+    event loop is never blocked, allowing SSE bytes to flush between tokens.
+    """
+    loop = asyncio.get_event_loop()
+    while True:
+        token = await loop.run_in_executor(None, next, gen, _SENTINEL)
+        if token is _SENTINEL:
+            break
+        yield token
+
+
 @app.post("/api/stream-summary")
 async def stream_summary(request: GenerateSummaryRequest):
     """
@@ -305,7 +321,7 @@ async def stream_summary(request: GenerateSummaryRequest):
             chunks = await asyncio.to_thread(text_splitter.split_text, extracted_data)
             vs = await asyncio.to_thread(vector_store.create_vector_store, chunks, request.topic)
             gen = rag_engine.stream_summary(vs, request.topic, request.model_name)
-            for token in gen:
+            async for token in _iter_sync_gen(gen):
                 yield f"data: {json.dumps({'token': token})}\n\n"
             yield "data: [DONE]\n\n"
         except Exception as exc:
@@ -324,7 +340,7 @@ async def stream_gaps(request: IdentifyGapsRequest):
     async def event_generator():
         try:
             gen = gap_detector.stream_gaps(request.summary, request.topic, request.model_name)
-            for token in gen:
+            async for token in _iter_sync_gen(gen):
                 yield f"data: {json.dumps({'token': token})}\n\n"
             yield "data: [DONE]\n\n"
         except Exception as exc:
@@ -343,7 +359,7 @@ async def stream_hypotheses(request: GenerateHypothesesRequest):
     async def event_generator():
         try:
             gen = hypothesis_agent.stream_hypotheses(request.gaps, request.topic, request.model_name)
-            for token in gen:
+            async for token in _iter_sync_gen(gen):
                 yield f"data: {json.dumps({'token': token})}\n\n"
             yield "data: [DONE]\n\n"
         except Exception as exc:
@@ -362,7 +378,7 @@ async def stream_experiment(request: PlanExperimentRequest):
     async def event_generator():
         try:
             gen = experiment_agent.stream_experiment_plan(request.hypotheses, request.model_name)
-            for token in gen:
+            async for token in _iter_sync_gen(gen):
                 yield f"data: {json.dumps({'token': token})}\n\n"
             yield "data: [DONE]\n\n"
         except Exception as exc:
