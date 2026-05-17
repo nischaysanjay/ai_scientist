@@ -205,7 +205,7 @@ export default function Home() {
 
       if (stopRequestedRef.current) return
       if (hypothesisToValidate && extracted.length > 0) {
-        await validateHyp(hypothesisToValidate, extracted, modelName, signal)
+        await validateHyp(hypothesisToValidate, extracted, topic, modelName, signal)
         if (stopRequestedRef.current) return
       }
 
@@ -451,7 +451,7 @@ export default function Home() {
                           const hypothesisToValidate = useCustomHypothesis && customHypothesis ? customHypothesis : hypotheses || ''
                           if (hypothesisToValidate && extractedData.length > 0) {
                             try {
-                              await validateHyp(hypothesisToValidate, extractedData, modelName)
+                              await validateHyp(hypothesisToValidate, extractedData, topic, modelName)
                             } catch (err) {
                               console.error('Retry failed:', err)
                             }

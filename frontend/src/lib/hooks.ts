@@ -252,14 +252,14 @@ export const useValidateHypothesis = () => {
   const { setError, setIsLoading, setValidationResult, setCurrentStep } = useWorkflowStore()
 
   const validateHypothesis = useCallback(
-    async (hypothesis: string, extractedData: ExtractedPaper[], modelName: string = 'mistral', signal?: AbortSignal) => {
+    async (hypothesis: string, extractedData: ExtractedPaper[], topic: string, modelName: string = 'mistral', signal?: AbortSignal) => {
       try {
         setIsLoading(true)
         setError(null)
         setCurrentStep('validating')
 
 
-        const result = await apiClient.validateHypothesis(hypothesis, extractedData, modelName, signal)
+        const result = await apiClient.validateHypothesis(hypothesis, extractedData, topic, modelName, signal)
         
 
         setValidationResult(result)

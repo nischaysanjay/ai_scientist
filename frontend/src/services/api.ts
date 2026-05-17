@@ -68,10 +68,11 @@ class ApiClient {
     return response.data.plan
   }
 
-  async validateHypothesis(hypothesis: string, extractedData: ExtractedPaper[], modelName: string = 'mistral', signal?: AbortSignal): Promise<ValidationResult> {
+  async validateHypothesis(hypothesis: string, extractedData: ExtractedPaper[], topic: string, modelName: string = 'mistral', signal?: AbortSignal): Promise<ValidationResult> {
     const response = await this.client.post('/api/validate-hypothesis', {
       hypothesis,
       extracted_data: extractedData,
+      topic,
       model_name: modelName,
     }, { signal })
     return response.data.validation_result

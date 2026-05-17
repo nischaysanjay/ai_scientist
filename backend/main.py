@@ -111,6 +111,7 @@ class ValidateHypothesisRequest(BaseModel):
     hypothesis: str = Field(..., description="Hypothesis to validate")
     extracted_data: List[ExtractedPaperModel] = Field(..., description="Extracted text from papers")
     model_name: str = Field("mistral", description="LLM model to use")
+    topic: Optional[str] = Field(None, description="Research topic for caching vector store")
 
 
 class ValidationResultModel(BaseModel):
@@ -215,7 +216,7 @@ async def generate_summary(request: GenerateSummaryRequest):
         # Offload CPU-bound embedding + LLM calls off the event loop
         extracted_data = [item.model_dump() for item in request.extracted_data]
         chunks = await asyncio.to_thread(text_splitter.split_text, extracted_data)
-        vs = await asyncio.to_thread(vector_store.create_vector_store, chunks)
+        vs = await asyncio.to_thread(vector_store.create_vector_store, chunks, request.topic)
         summary = await asyncio.to_thread(
             rag_engine.generate_summary, vs, request.topic, request.model_name
         )
@@ -280,7 +281,7 @@ async def validate_hypothesis(request: ValidateHypothesisRequest):
         # Offload CPU-bound embedding + LLM calls off the event loop
         extracted_data = [item.model_dump() for item in request.extracted_data]
         chunks = await asyncio.to_thread(text_splitter.split_text, extracted_data)
-        vs = await asyncio.to_thread(vector_store.create_vector_store, chunks)
+        vs = await asyncio.to_thread(vector_store.create_vector_store, chunks, request.topic)
         result = await asyncio.to_thread(
             validation_engine.validate_hypothesis, request.hypothesis, vs, request.model_name
         )
