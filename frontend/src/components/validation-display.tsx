@@ -296,7 +296,7 @@ export function MetricsRadarDisplay({ metrics }: { metrics: ValidationMetrics })
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-[220px]">
       <RadarChart cx="50%" cy="50%" outerRadius="70%" width={280} height={240} data={radarData}>
-        <PolarGrid stroke="hsl(var(--border))" />
+        <PolarGrid stroke="currentColor" strokeOpacity={0.15} strokeWidth={1} />
         <PolarAngleAxis 
           dataKey="subject" 
           tick={{ fill: 'currentColor', fontSize: 10, fontWeight: 'bold' }}
@@ -309,7 +309,7 @@ export function MetricsRadarDisplay({ metrics }: { metrics: ValidationMetrics })
           stroke="#8b5cf6"
           strokeWidth={2}
           fill="#8b5cf6"
-          fillOpacity={0.35}
+          fillOpacity={0.65}
         />
         <Tooltip
           contentStyle={{
