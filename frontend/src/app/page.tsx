@@ -38,6 +38,7 @@ import { EnhancedPaperList } from '@/components/enhanced-paper-card'
 import { ThemeToggle } from '@/components/theme-toggle'
 import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal'
 import { TabStatusBadge, TabStatus } from '@/components/tab-status'
+import { EmptyTabState } from '@/components/empty-tab-state'
 import { 
   AlertCircle, 
   BookOpen, 
@@ -439,13 +440,16 @@ export default function Home() {
                     <TabsList className="relative w-full grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
                       {/* Smooth Sliding Background Bubble */}
                       <span
-                        className="absolute h-[calc(100%-4px)] rounded-[22px] bg-[linear-gradient(135deg,rgba(139,92,246,0.18),rgba(168,85,247,0.08))] border border-primary/20 shadow-[0_10px_25px_rgba(139,92,246,0.14)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
+                        className="absolute h-[calc(100%-4px)] rounded-[22px] bg-[linear-gradient(135deg,rgba(139,92,246,0.18),rgba(168,85,247,0.08))] border border-primary/30 shadow-[0_0_24px_rgba(139,92,246,0.25)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
                         style={{
                           width: 'calc(16.666667% - 4px)',
                           left: `calc(${activeIndex * 16.666667}% + 2px)`,
                           top: '2px',
                         }}
-                      />
+                      >
+                        {/* Neon accent bottom strip */}
+                        <span className="absolute bottom-0 left-1/4 right-1/4 h-[3px] rounded-full bg-gradient-to-r from-primary to-purple-400 shadow-[0_0_12px_#8b5cf6] pointer-events-none animate-pulse-soft" />
+                      </span>
 
                       <TabsTrigger value="validation" className="text-xs sm:text-sm border-none shadow-none data-[state=active]:bg-none data-[state=active]:bg-transparent data-[state=active]:border-none data-[state=active]:shadow-none z-10">
                         <TabStatusBadge status={getTabStatus('validation')} label="Validation" />
@@ -583,11 +587,16 @@ export default function Home() {
                         </ResultSection>
                       </div>
                     ) : (
-                      <div className="premium-card rounded-[24px] p-12 text-center border-dashed border-border/50">
-                        <p className="text-muted-foreground font-medium">
-                          Run the research workflow to generate validation metrics.
-                        </p>
-                      </div>
+                      <EmptyTabState
+                         icon={<Target className="h-7 w-7" />}
+                         title="Validation Metrics Pending"
+                         description="Activate the AI Scientist research workflow to compile literature metrics, stability indicators, and Domain Fragmentation (CDM) reports."
+                         actionLabel="Configure Research"
+                         onAction={() => {
+                           const trigger = document.getElementById('num-papers')
+                           if (trigger) trigger.scrollIntoView({ behavior: 'smooth' })
+                         }}
+                       />
                     )}
                   </TabsContent>
 
@@ -609,6 +618,17 @@ export default function Home() {
                           </div>
                         </div>
                       </ResultSection>
+                    ) : papers.length === 0 ? (
+                      <EmptyTabState
+                        icon={<BookOpen className="h-7 w-7" />}
+                        title="Discovery Corpus Empty"
+                        description="Trigger the scientific research workflow to scour online publications and academic indexers for evidence chunks."
+                        actionLabel="Configure Research"
+                        onAction={() => {
+                          const trigger = document.getElementById('num-papers')
+                          if (trigger) trigger.scrollIntoView({ behavior: 'smooth' })
+                        }}
+                      />
                     ) : (
                       <ResultSection
                         title={`Discovery Corpus (${papers.length})`}
@@ -637,6 +657,17 @@ export default function Home() {
                           </div>
                         </div>
                       </ResultSection>
+                    ) : !summary ? (
+                      <EmptyTabState
+                        icon={<BookOpen className="h-7 w-7" />}
+                        title="Research Summary Pending"
+                        description="Trigger the AI Scientist workflow. The engine will compile extracted scientific evidence into a high-fidelity Markdown dossier."
+                        actionLabel="Configure Research"
+                        onAction={() => {
+                          const trigger = document.getElementById('num-papers')
+                          if (trigger) trigger.scrollIntoView({ behavior: 'smooth' })
+                        }}
+                      />
                     ) : (
                       <ResultSection
                         title="Research Summary"
@@ -670,6 +701,17 @@ export default function Home() {
                           </div>
                         </div>
                       </ResultSection>
+                    ) : !gaps ? (
+                      <EmptyTabState
+                        icon={<Zap className="h-7 w-7" />}
+                        title="Gaps Analysis Pending"
+                        description="Activate research to perform deep domain synthesis and highlight key blindspots and opportunities in current literature."
+                        actionLabel="Configure Research"
+                        onAction={() => {
+                          const trigger = document.getElementById('num-papers')
+                          if (trigger) trigger.scrollIntoView({ behavior: 'smooth' })
+                        }}
+                      />
                     ) : (
                       <ResultSection
                         title="Identified Research Gaps"
@@ -703,6 +745,17 @@ export default function Home() {
                           </div>
                         </div>
                       </ResultSection>
+                    ) : !hypotheses ? (
+                      <EmptyTabState
+                        icon={<Lightbulb className="h-7 w-7" />}
+                        title="Candidate Hypotheses Staged"
+                        description="Run research to formulate testable, novel scientific hypotheses based on identified literature gaps."
+                        actionLabel="Configure Research"
+                        onAction={() => {
+                          const trigger = document.getElementById('num-papers')
+                          if (trigger) trigger.scrollIntoView({ behavior: 'smooth' })
+                        }}
+                      />
                     ) : (
                       <ResultSection
                         title="Candidate Hypotheses"
@@ -736,6 +789,25 @@ export default function Home() {
                           </div>
                         </div>
                       </ResultSection>
+                    ) : !experimentPlan ? (
+                      useCustomHypothesis ? (
+                        <EmptyTabState
+                          icon={<TestTube className="h-7 w-7" />}
+                          title="Experimentation Skipped"
+                          description="Experiment generation is bypassed when working with manual custom hypothesis inputs."
+                        />
+                      ) : (
+                        <EmptyTabState
+                          icon={<TestTube className="h-7 w-7" />}
+                          title="Experimentation Plan Staged"
+                          description="Design thorough, validateable experimental methodologies by initiating the research cycle."
+                          actionLabel="Configure Research"
+                          onAction={() => {
+                            const trigger = document.getElementById('num-papers')
+                            if (trigger) trigger.scrollIntoView({ behavior: 'smooth' })
+                          }}
+                        />
+                      )
                     ) : (
                       <ResultSection
                         title="Experimentation Plan"
@@ -744,16 +816,8 @@ export default function Home() {
                       >
                         {isLoading && currentStep === 'planning-experiment' && !experimentPlan ? (
                           <ResultSkeleton />
-                        ) : experimentPlan ? (
-                          <ResultContent content={experimentPlan} isStreaming={isLoading && currentStep === 'planning-experiment'} />
-                        ) : useCustomHypothesis ? (
-                          <div className="premium-card rounded-[24px] p-8 border-dashed border-border text-center">
-                            <p className="text-sm text-muted-foreground italic">
-                              Experiment generation skipped (Manual Hypothesis Mode active)
-                            </p>
-                          </div>
                         ) : (
-                          <p className="text-muted-foreground italic text-center p-8">No plan generated yet.</p>
+                          <ResultContent content={experimentPlan} isStreaming={isLoading && currentStep === 'planning-experiment'} />
                         )}
                       </ResultSection>
                     )}

@@ -1,6 +1,6 @@
 'use client'
 
-import { ChevronDown, Download, ExternalLink, Clock, Star } from 'lucide-react'
+import { ChevronDown, Download, ExternalLink, Clock, Star, CheckCircle2 } from 'lucide-react'
 import { Paper } from '@/types'
 import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
@@ -148,6 +148,7 @@ interface EnhancedPaperListProps {
 
 export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps) {
   const [savedCount, setSavedCount] = useState(0)
+  const [exportedFileName, setExportedFileName] = useState<string | null>(null)
 
   const updateSavedCount = () => {
     try {
@@ -204,13 +205,19 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
 
       const blob = new Blob([markdown], { type: 'text/markdown' })
       const url = URL.createObjectURL(blob)
+      const fileName = `saved_research_bibliography_${new Date().toISOString().slice(0, 10)}.md`
       const a = document.createElement('a')
       a.href = url
-      a.download = `saved_research_bibliography_${new Date().toISOString().slice(0, 10)}.md`
+      a.download = fileName
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
       URL.revokeObjectURL(url)
+
+      // Trigger achievement success toast
+      setExportedFileName(fileName)
+      const timer = setTimeout(() => setExportedFileName(null), 4000)
+      return () => clearTimeout(timer)
     } catch (e) {
       console.error(e)
     }
@@ -234,7 +241,27 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 relative">
+      {/* Floating Success Achievement Card */}
+      {exportedFileName && (
+        <div className="fixed bottom-6 right-6 z-50 max-w-sm rounded-[24px] border border-green-500/35 bg-black/85 p-5 shadow-[0_20px_50px_rgba(16,185,129,0.2)] backdrop-blur-xl animate-in slide-in-from-bottom-8 duration-500 [html.light_&]:bg-white/95 [html.light_&]:border-green-600/30 [html.light_&]:shadow-[0_20px_50px_rgba(22,163,74,0.12)]">
+          <div className="flex gap-4 items-start">
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-green-500/25 bg-green-500/10 text-green-400 shadow-[0_0_15px_rgba(16,185,129,0.2)] [html.light_&]:border-green-600/30 [html.light_&]:bg-green-50/80 [html.light_&]:text-green-600">
+              <CheckCircle2 className="h-5 w-5 animate-pulse" />
+            </div>
+            <div className="space-y-1">
+              <h5 className="font-bold text-foreground">Export Successful</h5>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Bibliography dossier compiled and downloaded as:
+              </p>
+              <div className="font-mono text-[10px] bg-white/[0.04] text-green-400 py-1 px-2.5 rounded-lg border border-white/5 break-all mt-1.5 [html.light_&]:bg-black/[0.03] [html.light_&]:text-green-700 [html.light_&]:border-black/5">
+                {exportedFileName}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Header Banner */}
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 rounded-[28px] border border-white/10 bg-white/[0.02] p-6 backdrop-blur-md [html.light_&]:border-border/50 [html.light_&]:bg-white/40">
         <div className="space-y-1">

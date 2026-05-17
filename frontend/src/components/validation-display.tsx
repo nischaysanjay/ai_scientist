@@ -1,5 +1,6 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import { Badge } from '@/components/ui/badge'
 import { cn } from '@/lib/cn'
 import { CDMResult, NDIResult, ValidationMetrics } from '@/types'
@@ -77,6 +78,18 @@ export function MetricCard({ label, value, description, icon, color }: MetricCar
 }
 
 export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
+  const [contradictions, setContradictions] = useState(0)
+  const [neutralChunks, setNeutralChunks] = useState(0)
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setContradictions(cdm.contradictions), 150)
+    const t2 = setTimeout(() => setNeutralChunks(cdm.neutral_chunks), 250)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
+  }, [cdm.contradictions, cdm.neutral_chunks])
+
   return (
     <div className="space-y-4">
       <div className="p-4 rounded-xl bg-orange-500/10 dark:bg-orange-500/12 border border-orange-500/25 animate-reveal [animation-delay:400ms] fill-mode-both">
@@ -104,8 +117,8 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
             <PieChart width={220} height={180}>
               <Pie
                 data={[
-                  { name: 'Conflicts', value: cdm.contradictions, color: '#ef4444' },
-                  { name: 'Support', value: cdm.neutral_chunks, color: '#10b981' },
+                  { name: 'Conflicts', value: contradictions, color: '#ef4444' },
+                  { name: 'Support', value: neutralChunks, color: '#10b981' },
                 ].filter(d => d.value > 0)}
                 cx="50%"
                 cy="50%"
@@ -116,8 +129,8 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
                 stroke="none"
               >
                 {[
-                  { name: 'Conflicts', value: cdm.contradictions, color: '#ef4444' },
-                  { name: 'Support', value: cdm.neutral_chunks, color: '#10b981' },
+                  { name: 'Conflicts', value: contradictions, color: '#ef4444' },
+                  { name: 'Support', value: neutralChunks, color: '#10b981' },
                 ].filter(d => d.value > 0).map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
                 ))}
@@ -194,6 +207,18 @@ export function CDMResultDisplay({ cdm }: { cdm: CDMResult }) {
 }
 
 export function NDIResultDisplay({ ndi }: { ndi: NDIResult }) {
+  const [similarity, setSimilarity] = useState(0)
+  const [noveltyScore, setNoveltyScore] = useState(0)
+
+  useEffect(() => {
+    const t1 = setTimeout(() => setSimilarity(ndi.max_similarity * 100), 150)
+    const t2 = setTimeout(() => setNoveltyScore(ndi.ndi_score * 100), 250)
+    return () => {
+      clearTimeout(t1)
+      clearTimeout(t2)
+    }
+  }, [ndi.max_similarity, ndi.ndi_score])
+
   return (
     <div className="p-5 rounded-2xl bg-cyan-500/8 dark:bg-cyan-500/12 border border-cyan-500/25 dark:border-cyan-400/25 space-y-4">
       <div className="flex items-center gap-3">
@@ -212,7 +237,7 @@ export function NDIResultDisplay({ ndi }: { ndi: NDIResult }) {
         <div className="relative h-2 w-full bg-cyan-950 rounded-full overflow-hidden [html.light_&]:bg-cyan-100">
           <div
             className="h-full bg-gradient-to-r from-cyan-500 to-blue-500 shadow-[0_0_15px_rgba(6,182,212,0.6)] transition-all duration-1000 relative"
-            style={{ width: `${ndi.max_similarity * 100}%` }}
+            style={{ width: `${similarity}%` }}
           >
             <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/12 to-transparent shine-slow" />
           </div>
@@ -223,8 +248,8 @@ export function NDIResultDisplay({ ndi }: { ndi: NDIResult }) {
         <PieChart width={220} height={110}>
           <Pie
             data={[
-              { name: 'Novelty Score', value: ndi.ndi_score * 100, color: '#06b6d4' },
-              { name: 'Remainder', value: 100 - (ndi.ndi_score * 100), color: 'rgba(6, 182, 212, 0.15)' }
+              { name: 'Novelty Score', value: noveltyScore, color: '#06b6d4' },
+              { name: 'Remainder', value: 100 - noveltyScore, color: 'rgba(6, 182, 212, 0.15)' }
             ]}
             cx="50%"
             cy="100%"
@@ -237,8 +262,8 @@ export function NDIResultDisplay({ ndi }: { ndi: NDIResult }) {
             stroke="none"
           >
             {[
-              { name: 'Novelty Score', value: ndi.ndi_score * 100, color: '#06b6d4' },
-              { name: 'Remainder', value: 100 - (ndi.ndi_score * 100), color: 'rgba(6, 182, 212, 0.15)' }
+              { name: 'Novelty Score', value: noveltyScore, color: '#06b6d4' },
+              { name: 'Remainder', value: 100 - noveltyScore, color: 'rgba(6, 182, 212, 0.15)' }
             ].map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.color} />
             ))}

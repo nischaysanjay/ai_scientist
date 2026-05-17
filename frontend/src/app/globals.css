@@ -36,12 +36,18 @@
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
+  --animate-spin-slow: spin-slow 15s linear infinite;
   
   /* Custom Neon Colors */
   --color-neon-purple: #8b5cf6;
   --color-neon-blue: #3b82f6;
   --color-neon-pink: #ec4899;
   --color-neon-cyan: #06b6d4;
+
+  @keyframes spin-slow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
 
   @keyframes accordion-down {
     from { height: 0; }
