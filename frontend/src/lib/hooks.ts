@@ -29,8 +29,9 @@ async function fetchSSEStream(
   const reader = response.body!.getReader()
   const decoder = new TextDecoder()
   let accumulated = ''
+  let isDone = false
 
-  while (true) {
+  while (!isDone) {
     const { done, value } = await reader.read()
     if (done) break
 
@@ -40,7 +41,10 @@ async function fetchSSEStream(
     for (const line of lines) {
       if (!line.startsWith('data: ')) continue
       const payload = line.slice(6).trim()
-      if (payload === '[DONE]') break
+      if (payload === '[DONE]') {
+        isDone = true
+        break
+      }
       try {
         const parsed = JSON.parse(payload)
         if (parsed.error) throw new Error(parsed.error)
@@ -54,6 +58,7 @@ async function fetchSSEStream(
     }
   }
 
+  reader.cancel()
   return accumulated
 }
 
