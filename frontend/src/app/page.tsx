@@ -60,6 +60,8 @@ export default function Home() {
   const [isStopping, setIsStopping] = useState(false)
   const [showHelpModal, setShowHelpModal] = useState(false)
   const [activeTab, setActiveTab] = useState<ResultTab>('validation')
+  const tabOrder: ResultTab[] = ['validation', 'papers', 'summary', 'gaps', 'hypotheses', 'experiment']
+  const activeIndex = tabOrder.indexOf(activeTab)
   const stopRequestedRef = useRef(false)
   const abortControllerRef = useRef<AbortController | null>(null)
   const { isHealthy, error: healthError } = useApiHealth()
@@ -434,23 +436,33 @@ export default function Home() {
               <div className="animate-in fade-in slide-in-from-bottom-4 duration-700">
                 <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as ResultTab)} className="space-y-6">
                   <div className="premium-panel rounded-[28px] p-2">
-                    <TabsList className="w-full grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
-                      <TabsTrigger value="validation" className="text-xs sm:text-sm">
+                    <TabsList className="relative w-full grid grid-cols-6 bg-transparent border-0 shadow-none p-0">
+                      {/* Smooth Sliding Background Bubble */}
+                      <span
+                        className="absolute h-[calc(100%-8px)] rounded-[20px] bg-[linear-gradient(135deg,rgba(99,102,241,0.15),rgba(34,211,238,0.08))] border border-primary/20 shadow-[0_10px_25px_rgba(99,102,241,0.12)] transition-all duration-500 cubic-bezier(0.25, 1, 0.5, 1) pointer-events-none"
+                        style={{
+                          width: 'calc(16.666667% - 8px)',
+                          left: `calc(${activeIndex * 16.666667}% + 4px)`,
+                          top: '4px',
+                        }}
+                      />
+
+                      <TabsTrigger value="validation" className="text-xs sm:text-sm border-none shadow-none data-[state=active]:bg-none data-[state=active]:bg-transparent data-[state=active]:border-none data-[state=active]:shadow-none z-10">
                         <TabStatusBadge status={getTabStatus('validation')} label="Validation" />
                       </TabsTrigger>
-                      <TabsTrigger value="papers" className="text-xs sm:text-sm">
+                      <TabsTrigger value="papers" className="text-xs sm:text-sm border-none shadow-none data-[state=active]:bg-none data-[state=active]:bg-transparent data-[state=active]:border-none data-[state=active]:shadow-none z-10">
                         <TabStatusBadge status={getTabStatus('papers')} label="Papers" preview={papers.length ? String(papers.length) : undefined} />
                       </TabsTrigger>
-                      <TabsTrigger value="summary" className="text-xs sm:text-sm">
+                      <TabsTrigger value="summary" className="text-xs sm:text-sm border-none shadow-none data-[state=active]:bg-none data-[state=active]:bg-transparent data-[state=active]:border-none data-[state=active]:shadow-none z-10">
                         <TabStatusBadge status={getTabStatus('summary')} label="Summary" />
                       </TabsTrigger>
-                      <TabsTrigger value="gaps" className="text-xs sm:text-sm">
+                      <TabsTrigger value="gaps" className="text-xs sm:text-sm border-none shadow-none data-[state=active]:bg-none data-[state=active]:bg-transparent data-[state=active]:border-none data-[state=active]:shadow-none z-10">
                         <TabStatusBadge status={getTabStatus('gaps')} label="Gaps" />
                       </TabsTrigger>
-                      <TabsTrigger value="hypotheses" className="text-xs sm:text-sm">
+                      <TabsTrigger value="hypotheses" className="text-xs sm:text-sm border-none shadow-none data-[state=active]:bg-none data-[state=active]:bg-transparent data-[state=active]:border-none data-[state=active]:shadow-none z-10">
                         <TabStatusBadge status={getTabStatus('hypotheses')} label="Hypotheses" />
                       </TabsTrigger>
-                      <TabsTrigger value="experiment" className="text-xs sm:text-sm">
+                      <TabsTrigger value="experiment" className="text-xs sm:text-sm border-none shadow-none data-[state=active]:bg-none data-[state=active]:bg-transparent data-[state=active]:border-none data-[state=active]:shadow-none z-10">
                         <TabStatusBadge status={getTabStatus('experiment')} label="Experiment" />
                       </TabsTrigger>
                     </TabsList>
