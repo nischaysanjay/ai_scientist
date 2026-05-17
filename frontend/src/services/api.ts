@@ -15,6 +15,16 @@ class ApiClient {
         'Content-Type': 'application/json',
       },
     })
+
+    this.client.interceptors.response.use(
+      (response) => response,
+      (error) => {
+        if (error.response?.data?.detail) {
+          throw new Error(error.response.data.detail)
+        }
+        throw error
+      }
+    )
   }
 
   async searchPapers(topic: string, maxResults: number = 5, signal?: AbortSignal): Promise<Paper[]> {
