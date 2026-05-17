@@ -15,7 +15,7 @@ export function TabStatusBadge({ status, label, preview }: TabStatusBadgeProps) 
     <div className="flex items-center gap-2 min-w-max">
       <div className="flex items-center gap-1.5">
         {status === 'complete' && <Check className="h-4 w-4 text-green-500" />}
-        {status === 'loading' && <Clock className="h-4 w-4 text-primary animate-spin" />}
+        {status === 'loading' && <Clock className="h-4 w-4 text-primary dark:text-purple-400 dark:drop-shadow-[0_0_8px_rgba(168,85,247,0.6)] animate-spin" />}
         {status === 'pending' && <AlertCircle className="h-4 w-4 text-muted-foreground" />}
         <span className="hidden text-sm sm:inline">{label}</span>
       </div>
