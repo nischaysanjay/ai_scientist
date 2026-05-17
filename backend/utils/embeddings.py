@@ -16,7 +16,8 @@ def _resolve_local_embedding_model_path() -> str | None:
     if ref_file.exists():
         snapshot = cache_root / "snapshots" / ref_file.read_text().strip()
         if snapshot.exists():
-            return str(snapshot)
+            if (snapshot / "model.safetensors").exists() or (snapshot / "pytorch_model.bin").exists():
+                return str(snapshot)
     return None
 
 
