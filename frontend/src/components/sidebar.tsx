@@ -12,6 +12,7 @@ import {
   Settings2,
   Zap,
   FlaskConical,
+  X,
 } from 'lucide-react'
 
 export function Sidebar() {
@@ -135,13 +136,24 @@ export function Sidebar() {
 
                   {useCustomHypothesis && (
                     <div className="space-y-2.5 animate-in fade-in slide-in-from-top-2 duration-500 fill-mode-both">
-                      <Textarea
-                        placeholder="Enter your research hypothesis here..."
-                        value={customHypothesis || ''}
-                        onChange={(e) => setCustomHypothesis(e.target.value)}
-                        className="min-h-[112px] text-sm"
-                        disabled={isWorkflowActive}
-                      />
+                      <div className="relative">
+                        <Textarea
+                          placeholder="Enter your research hypothesis here..."
+                          value={customHypothesis || ''}
+                          onChange={(e) => setCustomHypothesis(e.target.value)}
+                          className="min-h-[112px] text-sm pr-9"
+                          disabled={isWorkflowActive}
+                        />
+                        {customHypothesis && !isWorkflowActive && (
+                          <button
+                            onClick={() => setCustomHypothesis('')}
+                            className="absolute right-2.5 top-2.5 p-1 rounded-full hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors"
+                            title="Clear hypothesis"
+                          >
+                            <X className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+                      </div>
 
                       {customHypothesis && (
                         <div className="rounded-xl border border-primary/16 bg-primary/[0.06] p-3 text-[12px] leading-relaxed">

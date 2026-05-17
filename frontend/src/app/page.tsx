@@ -353,13 +353,24 @@ export default function Home() {
                   <label className="block premium-label mb-3">
                     Research Topic
                   </label>
-                  <Input
-                    value={topic}
-                    onChange={(e) => setTopic(e.target.value)}
-                    placeholder="e.g., Deep Learning in Oncology, Quantum Computing Stability..."
-                    className="h-14 text-lg transition-all duration-300 focus-visible:ring-violet-500/35 focus-visible:border-violet-500/50 hover:border-violet-500/30"
-                    disabled={isRunning}
-                  />
+                  <div className="relative">
+                    <Input
+                      value={topic}
+                      onChange={(e) => setTopic(e.target.value)}
+                      placeholder="e.g., Deep Learning in Oncology, Quantum Computing Stability..."
+                      className="h-14 text-lg transition-all duration-300 focus-visible:ring-violet-500/35 focus-visible:border-violet-500/50 hover:border-violet-500/30 pr-12"
+                      disabled={isRunning}
+                    />
+                    {topic && !isRunning && (
+                      <button
+                        onClick={() => setTopic('')}
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-1.5 rounded-full hover:bg-muted/50 text-muted-foreground hover:text-foreground transition-colors"
+                        title="Clear topic"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 <div className="flex gap-4 animate-reveal [animation-delay:1000ms] fill-mode-both">
@@ -373,6 +384,7 @@ export default function Home() {
                         : "bg-muted text-foreground shadow-none border border-border disabled:opacity-100 cursor-not-allowed"
                     )}
                     size="lg"
+                    title={!isRunning ? "Initiate Research (Cmd/Ctrl + Enter)" : undefined}
                   >
                     {isRunning ? (
                       <>

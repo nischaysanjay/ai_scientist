@@ -279,6 +279,7 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
           <Button
             onClick={handleExportSaved}
             className="w-full sm:w-auto rounded-xl bg-[linear-gradient(135deg,#8b5cf6,#a855f7)] hover:opacity-90 font-black tracking-wide text-white shadow-lg shadow-purple-500/25 transition-all duration-300 hover:shadow-purple-500/35 cursor-pointer"
+            title="Export Bibliography (Cmd/Ctrl + E)"
           >
             <Download className="mr-2 h-4 w-4" />
             Export Bibliography ({savedCount})
