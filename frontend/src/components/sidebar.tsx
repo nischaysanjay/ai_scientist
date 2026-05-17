@@ -28,6 +28,8 @@ export function Sidebar() {
     isLoading,
   } = useWorkflowStore()
 
+  const isWorkflowActive = isLoading || (currentStep !== 'idle' && currentStep !== 'complete')
+
   return (
     <aside className="lg:col-span-1 space-y-6">
       <div className="sticky top-8 space-y-6">
@@ -62,6 +64,7 @@ export function Sidebar() {
                     value={[numPapers]}
                     onValueChange={(value) => setNumPapers(value[0])}
                     className="w-full opacity-90"
+                    disabled={isWorkflowActive}
                   />
                   <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground/65">
                     Maximum search depth
@@ -78,7 +81,7 @@ export function Sidebar() {
                     </Label>
                   </div>
                   <Select value={modelName} onValueChange={setModelName}>
-                    <SelectTrigger id="model">
+                    <SelectTrigger id="model" disabled={isWorkflowActive}>
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
@@ -115,6 +118,7 @@ export function Sidebar() {
                         id="use-custom"
                         checked={useCustomHypothesis}
                         onCheckedChange={(checked) => setUseCustomHypothesis(checked === true)}
+                        disabled={isWorkflowActive}
                       />
                     </div>
                   </div>
@@ -126,6 +130,7 @@ export function Sidebar() {
                         value={customHypothesis || ''}
                         onChange={(e) => setCustomHypothesis(e.target.value)}
                         className="min-h-[112px] text-sm"
+                        disabled={isWorkflowActive}
                       />
 
                       {customHypothesis && (
