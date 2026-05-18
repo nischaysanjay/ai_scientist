@@ -1,16 +1,15 @@
 # AI Scientist - Scientific Validation Edition
 
-A research assistant that combines RAG-based literature analysis with automated scientific validation.
-It discovers papers, extracts knowledge, generates hypotheses, and quantifies stability and novelty using CDM + NDI.
+A premium research assistant that combines RAG-based literature analysis with automated scientific validation. It discovers papers, extracts knowledge, generates hypotheses, and quantifies stability and novelty using advanced CDM + NDI metrics.
 
-## Features
+## Key Features
 
-- Paper search on arXiv
-- Local PDF download and text extraction
-- FAISS-backed semantic retrieval
-- Research summaries, gap detection, hypothesis generation, and experiment planning
-- Hypothesis validation with CDM + NDI
-- Local LLM inference through Ollama
+- **Robust Paper Retrieval:** Utilizes the OpenAlex API to fetch papers reliably, circumventing common arXiv IP rate limits.
+- **Local PDF Processing:** Automatically downloads and extracts text from research papers.
+- **Streaming LLM Architecture:** Features high-performance Server-Sent Events (SSE) endpoints for real-time AI generation to reduce perceived latency.
+- **Advanced Validation Metrics:** Quantifies hypotheses using the Contradiction Density Metric (CDM) and Novelty Distance Index (NDI), complete with intuitive UI hover tooltips.
+- **Premium User Experience:** Boasts a sleek glassmorphic design, automated UI scrolling during research, and seamless keyboard-based workflow cancellation (Escape-to-abort).
+- **Local & Private:** Fully local LLM inference powered by Ollama and FAISS-backed semantic retrieval.
 
 ## Prerequisites
 
