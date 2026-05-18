@@ -176,23 +176,23 @@ async def health_check():
 @app.post("/api/search-papers", response_model=List[PaperModel])
 async def search_papers(request: SearchPapersRequest):
     """
-    Search arXiv for papers related to a topic.
+    Search OpenAlex for papers related to a topic.
     
     Returns a list of papers with metadata.
     """
     try:
         papers = await asyncio.wait_for(
             asyncio.to_thread(paper_search.search_papers, request.topic, request.max_results),
-            timeout=15.0
+            timeout=60.0
         )
         return papers
     except asyncio.TimeoutError as exc:
         logger.error("Timeout searching papers for topic: %s", request.topic)
-        raise HTTPException(status_code=504, detail="Timeout searching papers. The arXiv API might be rate limiting us.") from exc
+        raise HTTPException(status_code=504, detail="Timeout searching papers. The OpenAlex API might be rate limiting us.") from exc
     except Exception as exc:
-        if "429" in str(exc) or "HTTP Error 429" in str(exc) or "UnexpectedEmptyPageError" in str(exc):
-            logger.warning("arXiv rate limit or block hit for topic: %s", request.topic)
-            raise HTTPException(status_code=429, detail="The arXiv API is currently rate limiting requests. Please wait a few seconds and try again.") from exc
+        if "429" in str(exc) or "HTTP Error 429" in str(exc):
+            logger.warning("OpenAlex rate limit or block hit for topic: %s", request.topic)
+            raise HTTPException(status_code=429, detail="The OpenAlex API is currently rate limiting requests. Please wait a few seconds and try again.") from exc
         raise _server_error("searching papers", exc) from exc
 
 
