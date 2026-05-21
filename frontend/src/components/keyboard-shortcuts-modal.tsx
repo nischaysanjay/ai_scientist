@@ -54,8 +54,7 @@ export function KeyboardShortcutsModal({ isOpen, onClose }: KeyboardShortcutsMod
   ]
 
   const isMac = typeof window !== 'undefined' && (
-    /Mac|iPhone|iPad|iPod/.test(navigator.platform) ||
-    /Macintosh|Mac OS X/.test(navigator.userAgent)
+    /Macintosh|Mac OS X|iPhone|iPad|iPod/.test(navigator.userAgent)
   )
 
   return (
