@@ -122,8 +122,9 @@ export const useWorkflowStore = create<WorkflowState>()(
         activeSessionId: null,
       })),
 
-    resetWorkflow: () => set(() => ({
+    resetWorkflow: () => set((state) => ({
       ...initialState,
+      sessions: state.sessions,
     })),
 
     loadAllSessionsFromStorage: () => {
