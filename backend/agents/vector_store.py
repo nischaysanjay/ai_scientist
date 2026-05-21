@@ -31,4 +31,4 @@ def load_vector_store(store_path):
     Loads a FAISS vector store from a local path.
     """
     embeddings = get_embedding_model()
-    return FAISS.load_local(store_path, embeddings)
+    return FAISS.load_local(store_path, embeddings, allow_dangerous_deserialization=True)
