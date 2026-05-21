@@ -15,14 +15,19 @@ export function ThemeToggle() {
   const dropdownRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
-    setMounted(true)
+    const timer = setTimeout(() => {
+      setMounted(true)
+    }, 0)
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false)
       }
     }
     document.addEventListener('mousedown', handleClickOutside)
-    return () => document.removeEventListener('mousedown', handleClickOutside)
+    return () => {
+      clearTimeout(timer)
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
   }, [])
 
   const themeLabel = theme === 'light' ? 'Light' : theme === 'dark' ? 'Dark' : 'System'
@@ -74,29 +79,31 @@ export function ThemeToggle() {
       {isOpen && (
         <div className="absolute right-0 mt-3 w-40 origin-top-right rounded-[20px] bg-background/80 backdrop-blur-2xl border border-white/20 dark:border-white/10 shadow-[0_12px_40px_rgba(0,0,0,0.15)] ring-1 ring-black/5 focus:outline-none z-[100] p-1.5 animate-in fade-in zoom-in-95 slide-in-from-top-3 duration-200">
           <div className="flex flex-col gap-1">
-            <button onClick={() => handleSelect('light')} className={`group flex items-center justify-between w-full px-3 py-2.5 text-xs font-bold tracking-wide rounded-[14px] transition-all duration-300 ${theme === 'light' ? 'bg-primary/15 text-primary shadow-sm' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}`}>
-              <div className="flex items-center gap-2.5">
-                <Sun className={`h-4 w-4 transition-transform duration-300 ${theme === 'light' ? 'rotate-12 scale-110' : 'group-hover:rotate-12'}`} /> 
-                <span>Light</span>
-              </div>
-              {theme === 'light' && <Check className="h-3.5 w-3.5" />}
-            </button>
-            
-            <button onClick={() => handleSelect('dark')} className={`group flex items-center justify-between w-full px-3 py-2.5 text-xs font-bold tracking-wide rounded-[14px] transition-all duration-300 ${theme === 'dark' ? 'bg-primary/15 text-primary shadow-sm' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}`}>
-              <div className="flex items-center gap-2.5">
-                <Moon className={`h-4 w-4 transition-transform duration-300 ${theme === 'dark' ? '-rotate-12 scale-110' : 'group-hover:-rotate-12'}`} /> 
-                <span>Dark</span>
-              </div>
-              {theme === 'dark' && <Check className="h-3.5 w-3.5" />}
-            </button>
-            
-            <button onClick={() => handleSelect('auto')} className={`group flex items-center justify-between w-full px-3 py-2.5 text-xs font-bold tracking-wide rounded-[14px] transition-all duration-300 ${theme === 'auto' ? 'bg-primary/15 text-primary shadow-sm' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'}`}>
-              <div className="flex items-center gap-2.5">
-                <Zap className={`h-4 w-4 transition-transform duration-300 ${theme === 'auto' ? 'scale-110' : 'group-hover:scale-110'}`} /> 
-                <span>System</span>
-              </div>
-              {theme === 'auto' && <Check className="h-3.5 w-3.5" />}
-            </button>
+            {themeOrder.map((t) => {
+              const isActive = theme === t
+              const label = t === 'light' ? 'Light' : t === 'dark' ? 'Dark' : 'System'
+              const Icon = t === 'light' ? Sun : t === 'dark' ? Moon : Zap
+              const iconClasses = t === 'light' 
+                ? `h-4 w-4 transition-transform duration-300 ${isActive ? 'rotate-12 scale-110' : 'group-hover:rotate-12'}`
+                : t === 'dark'
+                ? `h-4 w-4 transition-transform duration-300 ${isActive ? '-rotate-12 scale-110' : 'group-hover:-rotate-12'}`
+                : `h-4 w-4 transition-transform duration-300 ${isActive ? 'scale-110' : 'group-hover:scale-110'}`
+              return (
+                <button
+                  key={t}
+                  onClick={() => handleSelect(t)}
+                  className={`group flex items-center justify-between w-full px-3 py-2.5 text-xs font-bold tracking-wide rounded-[14px] transition-all duration-300 ${
+                    isActive ? 'bg-primary/15 text-primary shadow-sm' : 'text-muted-foreground hover:bg-foreground/5 hover:text-foreground'
+                  }`}
+                >
+                  <div className="flex items-center gap-2.5">
+                    <Icon className={iconClasses} />
+                    <span>{label}</span>
+                  </div>
+                  {isActive && <Check className="h-3.5 w-3.5" />}
+                </button>
+              )
+            })}
           </div>
         </div>
       )}

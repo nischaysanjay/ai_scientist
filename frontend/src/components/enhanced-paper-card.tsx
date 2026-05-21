@@ -15,16 +15,20 @@ export function EnhancedPaperCard({ paper }: EnhancedPaperCardProps) {
   const [saved, setSaved] = useState(false)
 
   useEffect(() => {
+    let timer: NodeJS.Timeout
     try {
       const savedPapers = localStorage.getItem('saved_papers_list')
       if (savedPapers) {
         const parsed = JSON.parse(savedPapers)
         if (Array.isArray(parsed) && parsed.some((p: Paper) => p.title === paper.title)) {
-          setSaved(true)
+          timer = setTimeout(() => setSaved(true), 0)
         }
       }
     } catch (e) {
       console.error(e)
+    }
+    return () => {
+      if (timer) clearTimeout(timer)
     }
   }, [paper.title])
 
@@ -167,9 +171,12 @@ export function EnhancedPaperList({ papers, isLoading }: EnhancedPaperListProps)
   }
 
   useEffect(() => {
-    updateSavedCount()
+    const timer = setTimeout(() => {
+      updateSavedCount()
+    }, 0)
     window.addEventListener('saved_papers_updated', updateSavedCount)
     return () => {
+      clearTimeout(timer)
       window.removeEventListener('saved_papers_updated', updateSavedCount)
     }
   }, [])
