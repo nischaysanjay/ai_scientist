@@ -37,7 +37,8 @@ def extract_text_from_pdf(pdf_path):
         line = line.strip()
         if len(line) < 10:
             continue
-        line = re.sub(r'[^A-Za-z0-9\s\.,;:\-_\'"()/\[\]%=+<>*^~]+', ' ', line)
+        # Keep standard alphanumeric characters, punctuation, math symbols, Greek letters, and common scientific units
+        line = re.sub(r'[^A-Za-z0-9\s\.,;:\-_\'"()/\[\]%=+<>*^~\u0370-\u03ff\u1f00-\u1fff±\u00d7\u00f7\u2248\u2260\u2264\u2265\u00b0\u03bc]+', ' ', line)
         line = re.sub(r'([^\w\s])\1{2,}', r'\1', line)
         cleaned_lines.append(line)
 
