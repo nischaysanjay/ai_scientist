@@ -93,9 +93,9 @@ export function HistoryPanel() {
           <div className="space-y-3 pt-2 max-h-[380px] overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-border scrollbar-track-transparent">
             {sessions.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-8 px-4 text-center rounded-[20px] border border-border/40 bg-muted/10 dark:border-white/5">
-                <FolderOpen className="h-8 w-8 text-muted-foreground/50 mb-2" />
-                <p className="text-xs text-muted-foreground/80 font-medium">No saved research sessions found</p>
-                <p className="text-[10px] text-muted-foreground/60 mt-0.5">Completed runs are saved automatically</p>
+                <FolderOpen className="h-8 w-8 text-muted-foreground/50 [html.light_&]:text-muted-foreground/70 mb-2" />
+                <p className="text-xs text-muted-foreground/80 [html.light_&]:text-muted-foreground/95 font-medium">No saved research sessions found</p>
+                <p className="text-[10px] text-muted-foreground/60 [html.light_&]:text-muted-foreground/80 mt-0.5">Completed runs are saved automatically</p>
               </div>
             ) : (
               sessions.map((session) => {
@@ -113,7 +113,7 @@ export function HistoryPanel() {
                   >
                     <div className="space-y-3">
                       {/* Session Metadata Row */}
-                      <div className="flex items-center justify-between text-[10px] text-muted-foreground/85">
+                      <div className="flex items-center justify-between text-[10px] text-muted-foreground/85 [html.light_&]:text-muted-foreground/95">
                         <div className="flex items-center gap-1.5 font-medium">
                           <Calendar className="h-3 w-3 text-primary/70" />
                           <span>{formatDate(session.timestamp)}</span>
@@ -131,8 +131,8 @@ export function HistoryPanel() {
                       {/* Details & Badges */}
                       <div className="flex flex-wrap items-center gap-2">
                         {/* Number of papers badge */}
-                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground/75 bg-muted/40 px-2 py-0.5 rounded-md font-medium">
-                          <BookOpen className="h-3 w-3 text-muted-foreground/60" />
+                        <div className="flex items-center gap-1 text-[10px] text-muted-foreground/75 [html.light_&]:text-muted-foreground/90 bg-muted/40 px-2 py-0.5 rounded-md font-medium">
+                          <BookOpen className="h-3 w-3 text-muted-foreground/60 [html.light_&]:text-muted-foreground/80" />
                           <span>{session.papers?.length || 0} papers</span>
                         </div>
 

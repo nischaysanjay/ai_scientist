@@ -72,7 +72,7 @@ export function Sidebar() {
                     className="w-full opacity-90"
                     disabled={isWorkflowActive}
                   />
-                  <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground/65">
+                  <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground/65 [html.light_&]:text-muted-foreground/80">
                     Maximum search depth
                   </p>
                 </div>
@@ -97,7 +97,7 @@ export function Sidebar() {
                       <SelectItem value="mistral">Mistral</SelectItem>
                     </SelectContent>
                   </Select>
-                  <div className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground/65">
+                  <div className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground/65 [html.light_&]:text-muted-foreground/80">
                     Local-first inference
                   </div>
                 </div>
@@ -122,7 +122,7 @@ export function Sidebar() {
                         >
                           Manual Entry Mode
                         </Label>
-                        <p className="text-[10px] text-muted-foreground/75">
+                        <p className="text-[10px] text-muted-foreground/75 [html.light_&]:text-muted-foreground/90">
                           Use your own hypothesis
                         </p>
                       </div>
