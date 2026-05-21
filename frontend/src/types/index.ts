@@ -111,3 +111,21 @@ export interface ValidateHypothesisRequest {
 
 // Legacy for compatibility
 export type AIResponse<T = unknown> = ApiSuccessResponse<T> | ApiErrorResponse
+
+// Persistent Research Session for session history
+export interface ResearchSession {
+  id: string
+  timestamp: number
+  topic: string
+  papers: Paper[]
+  extractedData: ExtractedPaper[]
+  summary: string | null
+  gaps: string | null
+  hypotheses: string | null
+  experimentPlan: string | null
+  validationResult: ValidationResult | null
+  numPapers: number
+  modelName: string
+  useCustomHypothesis: boolean
+  customHypothesis: string | null
+}

@@ -39,6 +39,7 @@ import { ThemeToggle } from '@/components/theme-toggle'
 import { KeyboardShortcutsModal } from '@/components/keyboard-shortcuts-modal'
 import { TabStatusBadge, TabStatus } from '@/components/tab-status'
 import { EmptyTabState } from '@/components/empty-tab-state'
+import { BackToTop } from '@/components/back-to-top'
 import { 
   AlertCircle, 
   BookOpen, 
@@ -85,7 +86,21 @@ export default function Home() {
     error,
     currentStep,
     resetWorkflow,
+    loadAllSessionsFromStorage,
+    saveCurrentSession,
   } = useWorkflowStore()
+
+  // Load all sessions from storage on initial mount
+  useEffect(() => {
+    loadAllSessionsFromStorage()
+  }, [loadAllSessionsFromStorage])
+
+  // Automatically save session when research completes
+  useEffect(() => {
+    if (currentStep === 'complete') {
+      saveCurrentSession()
+    }
+  }, [currentStep, saveCurrentSession])
 
   const { searchPapers } = useSearchPapers()
   const { processPDFs } = useProcessPDFs()
@@ -853,6 +868,7 @@ export default function Home() {
       isOpen={showHelpModal} 
       onClose={() => setShowHelpModal(false)} 
     />
+    <BackToTop />
     </>
   )
 }

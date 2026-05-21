@@ -8,6 +8,7 @@ import { Switch } from '@/components/ui/switch'
 import { Textarea } from '@/components/ui/textarea'
 import { cn } from '@/lib/cn'
 import { QuickStatsCard } from '@/components/quick-stats-card'
+import { HistoryPanel } from '@/components/history-panel'
 import {
   Settings2,
   Zap,
@@ -175,6 +176,10 @@ export function Sidebar() {
             currentStep={currentStep}
             isLoading={isLoading}
           />
+        </div>
+
+        <div className="animate-reveal [animation-delay:400ms]">
+          <HistoryPanel />
         </div>
       </div>
     </aside>
