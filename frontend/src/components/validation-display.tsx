@@ -296,11 +296,28 @@ export function NDIResultDisplay({ ndi }: { ndi: NDIResult }) {
 }
 
 export function MetricsRadarDisplay({ metrics }: { metrics: ValidationMetrics }) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setMounted(true)
+    }, 0)
+    return () => clearTimeout(timer)
+  }, [])
+
   const radarData = [
     { subject: 'Stability', A: metrics.stability_score * 100, fullMark: 100 },
     { subject: 'Novelty', A: metrics.novelty_score * 100, fullMark: 100 },
     { subject: 'Viability', A: metrics.viability_score * 100, fullMark: 100 },
   ]
+
+  if (!mounted) {
+    return (
+      <div className="flex h-[240px] w-full items-center justify-center text-xs text-muted-foreground/60">
+        Loading validation profile...
+      </div>
+    )
+  }
 
   return (
     <div className="flex flex-col items-center justify-center w-full min-h-[220px]">
